@@ -1,0 +1,101 @@
+20191202 클릭커 게임 세팅 하는 방법
+
+// ------------------------------------------------------------------------------
+1. 프로젝트 세팅하기
+- Unity Hub -> 새로 생성 -> 2D -> 이름 : Clicker
+
+2. 유니티 패키지란 무엇인가?
+- 다운 받은 클릭커용 유니티 패키지를 클릭한다.
+- 자동으로 마지막에 열린 유니티 프로젝트에서 Import Unity Package라는 창이 뜬다.
+- Import를 누르면 자동으로 다 파일이 세팅이 된다.
+
+3. 수동으로 유니티 패키지를 Import하는 방법
+- 유니티에서 Assets폴더를 마우스 오른쪽 클릭한다.
+- Import Package메뉴 클릭 -> Custom Package메뉴 클릭 -> Unity Package를 선택 -> 열기
+
+4. 유니티 패키지를 만드는 방법
+- 패키지로 만들고 싶은 대상 폴더를 우클릭한다.
+- Export Package를 누른다. -> Export를 누른다. -> 저장을 할 폴더를 선택 -> 저장클릭
+
+// ------------------------------------------------------------------------------
+2. 기본 프로젝트 세팅을 해준다.
+
+- UI폴더 -> 01_1Back이미지 -> 로비에 사용할 것
+- UI폴더 -> 02_1Back이미지 -> 인게임에 사용할 것
+- 화면비율은 16:9이거나 18:9로 하면 된다.
+- 이번게임은 세로형클릭커게임을 만들 것이므로 9:16 화면비율로 맞출 것이다.
+- SampleScene의 이름을 Title으로 바꾼다.
+
+배경이미지를 화면에 맞추는 방법
+- 수동으로 배경에 쓸 이미지를 Hierarchy에 넣어서 Scale을 화면에 맞추어 조정하는 방법
+=> 하지만 이렇게 하면 화면비율이 변경이 되면 이미지가 화면에 맞지 않게 된다.
+- 이 해상도에 대응하는 방법은 Sprite로 만드는 것이 아닌 UI로 만들면 된다.
+
+UI를 이용하여 화면해상도에 배경이미지를 자동으로 맞추는 방법
+- UI -> Image
+- Canvas오브젝트 -> Canvas컴포넌트 -> Render Mode : Screen Space - Camera
+- Canvas오브젝트 -> Canvas Sclaer컴포넌트 -> UI Scale Mode : Scale With Screen Size
+- Canvas오브젝트 -> Canvas Sclaer컴포넌트 -> Reference Resolution : X(900), Y(1600)
+- 이미지를 화면에 가득 채우게 설정하는 방법
+=> Image오브젝트 -> Rect Transform -> 맨 왼쪽 사각형 아이콘클릭 -> Strecth-Strecth클릭
+-> 모든 값을 0으로 설정하기
+- Image오브젝트 -> Image컴포넌트 -> Source Image : 01_1Back
+- Image오브젝트 -> 이름수정 : Background
+
+// ------------------------------------------------------------------------------
+3. 
+
+- Canvas -> UI -> Image
+- Image오브젝트 -> Image컴포넌트 -> Source Image : 01_2Logo
+- Image오브젝트의 위치와 Scale을 조정하여 화면상에 배치
+- Image오브젝트의 RectTransform -> Top-Center로 배치
+- Image오브젝트 -> 이름수정 : Title
+- Canvas -> UI -> Text
+
+- Background -> Add Component -> Button(Script) 
+- 버튼을 클릭할 떄 RayCast라는 기능을 사용한다.
+- Title이나 Text오브젝트 위에 클릭을 하면 오브젝트가 덮어져서 버튼기능이 먹지 않는다.
+- 이럴떄는 Title의 Image컴포넌트에 Raycast Target을 체크해제해준다.
+
+- Canvas -> UI -> Button
+- Button -> Rect Transform -> Strecth - Strecth -> 모든 값을 0으로 하기
+- Button -> Image -> Source Image : None
+- Button -> Button컴포넌트 -> Color -> Alpha값을 0으로 하기
+- Button -> Button컴포넌트 -> Transition : None
+
+// ------------------------------------------------------------------------------
+4.
+
+- Assets -> Create -> Folder -> 이름수정 : Scripts
+- Scripts -> Create -> C# Scripts -> 이름수정 : TitleController.cs
+- Assets -> Create -> Scene -> 이름수정 : Main
+- File -> Build Settings -> Main씬과 Title씬을 모두 선택 -> 드래그 앤 드롭
+- Hierarchy -> Create Empty -> 이름수정 : TitleController
+- TitleController -> Add Component -> TitleController.cs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

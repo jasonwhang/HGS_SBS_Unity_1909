@@ -16,7 +16,7 @@
 => Pivot X : 0 , Pivot Y : 1
 
 // ------------------------------------------------------------------------------
-2. 
+2. Scroll UI 오브젝트 만들어주기
 
 - ScrollArea
 => Scroll Rect : 스크롤을 해 줄 대상을 설정해준다.
@@ -26,17 +26,48 @@
 => Grid Layout Group : Cell Size
 => Content Size Fitter
 
+// ------------------------------------------------------------------------------
+3. ScrollUI의 Animation 만들어주기
 
+- Animation폴더 -> UI폴더 만들기
+- Animator Controller -> 이름수정 : ScrollUI
+- Animation -> 이름수정 : MoveUP
+- Animation -> 이름수정 : MoveDown
 
+- PlayerWindow에 Animator Component를 붙여도 되는 이유
+=> 위치를 옮기지 않고 고정시킬것이기 떄문에
+=> 위치를 옮기는 UI이면 붙이면 안된다.
 
+- PlayerWindow -> Animator -> Controller -> ScrollUI
 
+- Animator창 -> Create State -> Empty -> 이름수정 : Idle(Dummy)
+- MoveUp과 MoveDown은 서로 Transition을 연결시켜준다.
+- Idle(Dummy)에서 MoveUp으로 연결하는 Transition을 만들어준다.
+- Animator창 -> Parameter -> Trigger -> 만들기 -> 이름수정 : Move
+- Idle(Dummy)에서 MoveUP으로 가는 Transition -> Conditions -> Move추가
 
+- 트리거는 Move라는 신호를 주면 Idle(Dummy)에서 MoveUp으로 가고 Move라는 신호가 꺼진다.
+- MoveUP의 상태에서 다시 Move라는 신호를 주면 MoveDown으로 가고 Move라는 신호가 꺼진다.
+- Move라는 신호가 그 다음에 없으면 MoveDown 상태로 UI가 계속 멈추게 된다.
 
+- PlayerWindow -> MoveDown -> Add Property -> Rect Transform -> Anchored Position
+- PlayerWindow -> MoveUP-> Add Property -> Rect Transform -> Anchored Position
 
+// ------------------------------------------------------------------------------
+3. Animation의 Curve에 대한 기능을 알아보자.
 
+- Ctrl + 6 -> Animation창 -> 밑에 Dopesheet말고 옆에 Curves클릭
+- 
 
+// ------------------------------------------------------------------------------
+4. Script를 추가하여 UI를 조작해보자.
 
+- 오브젝트를 복붙을 하면 Scale의 값이 1이 아닌 값이 나온다.
+=> 그래서 내용물의 값들은 바뀌지 않지만 좌표값이랑 Scale의 값만 바뀐다.
 
+- Scripts에 MainUIController.cs를 만들어준다.
+=> Window가 4개가 만들어질 것이다.
+=> 
 
 
 

@@ -1,0 +1,93 @@
+20191204 수업내용
+
+// ------------------------------------------------------------------------------
+1. Main씬의 UI를 작업한다.
+
+- Main씬의 Background이미지를 만들어준다.
+=> Image -> 이름수정 : Background -> Source Imaage : 02_1Back
+=> Rect Transform -> stretch : stretch
+- UI를 클릭하였을 때 플레이어에게 보이는 윈도우 창의 이미지를 만들어준다.
+=> Image -> 이름수정 : PlayerWindow -> Source Image : 02_6ScrollMenu
+
+- 해상도에 맞추어서 자동으로 위치를 맞추어주는 작업
+=> PlayerWindow -> Rect Transform
+=> bottom : stretch
+=> left : 0, Pos Y : 0, Right : 0, Height : 754.85
+=> Pivot X : 0 , Pivot Y : 1
+
+// ------------------------------------------------------------------------------
+2. 
+
+- ScrollArea
+=> Scroll Rect : 스크롤을 해 줄 대상을 설정해준다.
+=> Rect Mask 2D
+
+- ScrollTarget
+=> Grid Layout Group : Cell Size
+=> Content Size Fitter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

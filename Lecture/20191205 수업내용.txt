@@ -34,15 +34,52 @@
 - 마우스의 좌표
 - 끝벡터에서 시작벡터를 빼면 카메라가 보고 있는 방향을 볼 수 있다.
 
+// ------------------------------------------------------------------------------
+6. 2교시 시작 - TouchManager.cs Script를 만든다.
+- Main Camera -> Camera -> Clipping Planes : 0.3(0.3떨어진 곳부터 Z좌표가 시작된다.)
+
+- 마우스를 클릭하였을 떄 마우스의 위치를 탐구해보자.
+=> 마우스로 클릭하였을 때 검출되는 좌표는 무조건 Screen좌표계로 나온다.
+=> Left-Bottom이 (0,0)으로 하는 좌표계이다.
+
+- Z축에서 -10이라는 값은 카메라의 절대좌표이다.
+
+- farPlane의 값이 실행했을 때 1000으로 나왔다. 하지만 원래는 990이 나와야 한다.
+=> Vector3 farPlane = new Vector3(worldPos.x, worldPos.y, mTouchCamera.farClipPlane);
+
+- 카메라가 어느 방향으로 회전을 하여 바라보는 방향이 달라져도 똑같은 화면의 좌표를 클릭하였을 때 
+알아서 Vector 좌표가 나올 수 있도록 만들어보자.
+
+// 가져와야 되는 마우스 좌표는 월드좌표이다.
+Debug.Log(Input.mousePosition);
+// 카메라를 이용하여 Vector변환을 하는 방법
+// Collider가 월드좌표로 되어있으므로 우리가 필요한 위치는 월드위치이다.
+// Screen좌표를 월드좌표로 바꾸어준다.
+//Vector3 worldPos = mTouchCamera.ScreenToWorldPoint(Input.mousePosition);
+Vector3 screenPos = Input.mousePosition;
+Ray ray = new Ray(nearPlane, farPlane - nearPlane);
 
 
+// ------------------------------------------------------------------------------
+7. Layer Mask의 개념
 
+- RayCastHit에 대한 이름의 정보를 가져와보자.
+=> Debug.Log(hit.collider.gameObject.name);
+- Layer를 Default만 검출하도록 해보자.
+=> Default 레이어가 0이다.
+- Layer Mask의 개념
+=> 
 
+FindTarget()
+Ray2D ray = new Ray2D(transform.position + Vector3.up, MoveDirection);
 
+if(IsMonster)
+layerMask = 1 << LayerMask.NameToLayer("Hero");
+else
+layerMask = 1 << LayerMask.NameToLayer("Monster);
 
-
-
-
+버튼으로 하면 손가락 10개로 화면을 누르면 10번이 다 눌러지는 문제가 발생한다.
+하지만 클리커게임은 1개만 반응하도록 한다.
 
 
 

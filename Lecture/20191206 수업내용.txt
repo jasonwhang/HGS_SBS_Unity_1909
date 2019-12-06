@@ -1,0 +1,231 @@
+20191206 수업내용
+
+// ------------------------------------------------------------------------------
+1. TouchInput에 대한 기능을 만들어보자.
+
+// Touch가 눌렸는지를 가지고 오는 함수이다.
+public bool GetTouch()
+{
+    // 여기로 들어왔다는 것은 터치를 진행하고 있다는 의미이다.
+    // Update프레임 함수 내이기 때문에 이런 for문 방식이 가능해진다.
+    // 유니티에서는 멀티터치가 최대 10개가 지원이 된다.
+    for (int i = 0; i < Input.touchCount; i++)
+    {
+        // Touch라는 데이터가 있다.
+        Touch touch = Input.GetTouch(i);
+        // Touch의 상태를 보는 것을 알아야 한다.
+        // GetKeyDown, GetKeyState, GetKeyUp처럼 Touch도 상태가 나뉘어져 있다.
+        // touch.phase는 enum이다.
+        // Began, Cancled, Ended, Moved, Stationaly 5종류의 상태가 있다.
+        if (touch.phase == TouchPhase.Began)
+        {
+            // touch.position이 screen position이다.
+            Ray ray = GenerateRay(touch.position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.gameObject == gameObject)
+                {
+                    GameObject dummy = Instantiate(mDummy);
+                    dummy.transform.position = hit.point;
+                    // GameController.Touch();
+                    // touch를 하고 나서 return을 해주어야지 그 다음 update를 하지 않는다.
+                    return true;
+
+                    // 강사님께서는 이 기능을 함수로 만들어서 bool로 return을 받아 update에서
+                    // 터치를 했는지 안했는지 체크를 해준다.
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+// ------------------------------------------------------------------------------
+2. 강사님이 실제 게임개발할 때 사용한 Touch기능 코드
+
+private void Update()
+{
+ if(TouchCheck())
+ GameController.instance.Touch;
+
+ #if UNITY_EDITOR
+ if(Input.GetMouseButtonDown(0))
+ Ray ray = GenerateRay(Input.mousePosition);
+ RacasHit hit;
+ if(Physics.Raycast(ray.origin, ray.direction, out hit))
+ {
+    if(hit.transform.gameObject == this.gameObject)
+    {
+       if(hit.transform.gameObject == this.gameObject)
+       {
+          EffectPool.instance.GetFromPool(effectPivot).transform.position = hit.point;
+          ComboCheck();
+       }
+    }
+  }
+  #endif
+}
+
+bool TouchCheck()
+{
+  Ray ray = GenerateRay(Input.mousePosition);
+  RacasHit hit;
+  // 충돌한 것이 있는지를 검증한다.
+  if(hit.transform.gameObject == this.gameObject)
+  {
+     EffectPool.instance.GetFromPool(effectPivot).transform.position = hit.point;
+     ComboCheck();
+  }
+}
+
+#if UNITY_EDITOR 매크로 말고도 아래 기능의 매크로들이 있다.
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_STANDALONE_OSX(맥OS)
+
+// ------------------------------------------------------------------------------
+3. 파티클 시스템에 대하여 알아보자.
+
+- Duration : 5초
+=> 5초동안 유지가 되는 파티클 시스템이다.
+=> 1초 내로 파티클을 끌 것이기 떄문에 2~3초정도 설정
+
+- Looping : 체크
+=> 반복되는 파티클인 경우 체크를 하고 아닌 경우 체크를 해제
+=> 우리는 체크해제
+
+- Start Delay : 몇 초 후에 파티클이 시작될 것인지를 설정
+=> 0초이면 파티클이 실행되자마자 바로 이펙트가 나타나도록 하는 것이다.
+
+- Start LifeTime : 
+=> 1초로 설정
+
+- Start Speed :
+=> 1초로 설정
+
+- Start Size
+
+- Start Rotation : 
+
+- Flip Rotation :
+
+- Start Color :
+
+- Play On Awake : 
+=> 체크
+
+- Auto Random Seed : 
+=> 체크
+
+// ------------------------------------------------------------------------------
+4. 파티클 시스템의 Emission을 알아보자
+
+// ------------------------------------------------------------------------------
+5. 파티클 시스템의 Shape를 알아보자.
+
+// ------------------------------------------------------------------------------
+6. 파티클 시스템의 Renderer를 알아보자.
+
+- Render Mode :
+=> Billboard : 
+
+- Material
+=> Assets -> Create -> Folder -> 이름수정 : Effects
+=> Effects폴더 -> Create -> Material -> 이름수정 : TouchParticle
+=> TouchParticle -> Shader -> Unlit/Transparent
+
+- Sorting Layer
+=> Default로 설정
+- Ording Layer
+=> 1로 설정 : 캐릭터들보다는 앞에 나오게 하기 위하여
+
+// ------------------------------------------------------------------------------
+7. Color over LifeTime
+
+=> Blend : 횟불의 불 입자같은 것을 만들때 불입자가 위로 올라가게 만들 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

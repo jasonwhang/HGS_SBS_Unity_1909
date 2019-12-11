@@ -18,6 +18,9 @@ public class GemController : MonoBehaviour
     private double mCurrentHP, mMaxHP, mPhaseBoundary;
     private int mCurrentPhase, mStartIndex;
 
+    [SerializeField]
+    private GaugeBar mGauge;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -36,9 +39,12 @@ public class GemController : MonoBehaviour
         mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
     }
 
-    public void AddProgress(double value)
+    public bool AddProgress(double value)
     {
         mCurrentHP += value;
+
+        mGauge.IncreaseGauge(mCurrentHP);
+
         Debug.LogFormat("{0} / {1}", mCurrentHP, mMaxHP);
 
         // 2019.12.11 수요일 - 코드 수정(if문 조건수정)
@@ -50,11 +56,13 @@ public class GemController : MonoBehaviour
             if (mCurrentPhase > 4)
             {
                 //Clear
-                return;
+                return true;
             }
             mGem.sprite = mGemSprite[mStartIndex + mCurrentPhase];
             // 2019.12.11 수요일 - 코드 추가
             mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
         }
+
+        return false;
     }
 }

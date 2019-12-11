@@ -37,8 +37,12 @@ public class GameController : MonoBehaviour
     // 터치매니저에서 터치가 되는 시점을 인식 -> 게임컨틀롤러의 터치함수(게이트웨이기능) -> 잼컨트롤러
     public void Touch()
     {
-        // 데미지에 관련된 기능을 만들지 않았으므로 페이즈를 증가시켜주도록 한다.
-        mGem.AddProgress(1);
+        
+        if(mGem.AddProgress(1))
+        {
+            int id = Random.Range(0, GemController.MAX_GEM_COUNT);
+            mGem.GetNewGem(id);
+        }
     }
 
     // Update is called once per frame

@@ -8,10 +8,18 @@ public class MainUIController : MonoBehaviour
     [SerializeField]
     Animator[] mWindowAnims;
 
+    [SerializeField]
+    private GaugeBar mProgressBar;
+
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    public void ShowProgress(float progress)
+    {
+        mProgressBar.ShowGaugeBar(progress);
     }
 
     public void MoveWindow(int id)

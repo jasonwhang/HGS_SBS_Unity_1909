@@ -55,14 +55,16 @@ public class TouchManager : MonoBehaviour
                 {
                     Timer effect = mEffectPool.GetFromPool(0);
                     effect.transform.position = hit.point;
-                    // GameController.Touch();
+                    // 2019.12.11 - 코드 추가
+                    GameController.Instance.Touch();
                 }
             }
         }
 #endif
         if (GetTouch())
         {
-            // GameController.Touch();
+            // 2019.12.11 - 코드 추가
+            GameController.Instance.Touch();
         }
     }
 }

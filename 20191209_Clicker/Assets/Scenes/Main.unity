@@ -1207,7 +1207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20dc2d6df4a1a1743ac34030253746f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mGem: {fileID: 0}
+  mSheetCount: 5
+  mGem: {fileID: 1065258020}
+  mGemSprite: []
 --- !u!4 &628944255
 Transform:
   m_ObjectHideFlags: 0
@@ -2196,7 +2198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c7dd1d26ed9e548b4f0aa3fcafbae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mGem: {fileID: 0}
+  mGem: {fileID: 628944254}
 --- !u!4 &1073829297
 Transform:
   m_ObjectHideFlags: 0

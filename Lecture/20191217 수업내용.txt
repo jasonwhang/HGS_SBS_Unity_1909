@@ -1,20 +1,79 @@
 20191217 수업내용
 
 // ------------------------------------------------------------------------------
-1. 
+1. ColleagueController.cs에서 Init수정
 
 - Init에 Callback으로 함수를 넘겨준 이유
 => 칸의 형태가 같기 때문에 함수의 기능이 약간 다른 함수를 같은 스크립트내에서 해결하기 위하여
 
+a.Init(
+    mDataArr[i].Name,
+    mDataArr[i].Contents,
+    "구매",
+    mDataArr[i].Level,
+    mDataArr[i].ValueCurrent,
+    mDataArr[i].CostCurrent,
+    mDataArr[i].JobTime,
+    AddLevel
+);
+
+- ColleagueData에 ValueCurrent변수 추가
+- 
+
+// ------------------------------------------------------------------------------
+2. 
+
+// ------------------------------------------------------------------------------
+3. 
+
+// ------------------------------------------------------------------------------
+4. 
+
+// ------------------------------------------------------------------------------
+5. 버튼이 눌리면 각각 해당하는 윈도우가 올라갔다 내려갔다 하는 기능 만들기
+
+- PlayerWindow -> Ctrl + 6 -> MoveUp -> Add Property -> Button -> IsAvtive -> true
+- PlayerWindow -> Ctrl + 6 -> MoveDown -> Add Property -> Button -> IsAvtive -> false
+
+- ColleagueWindow -> Ctrl + 6 -> MoveUp -> Add Property -> Button -> IsAvtive -> true
+- ColleagueWindow -> Ctrl + 6 -> MoveDown -> Add Property -> Button -> IsAvtive -> false
+
+- SkillWindow -> Ctrl + 6 -> MoveUp -> Add Property -> Button -> IsAvtive -> true
+- SkillWindow -> Ctrl + 6 -> MoveDown -> Add Property -> Button -> IsAvtive -> false
+
+- PlayerButton -> Button Component -> On Click() -> MainUIController -> MoveWindow -> 0
+- ColleagueWindow -> Button오브젝트 -> Button Component -> On Click() -> MainUIController
+-> MoveWindow -> 1
+- SkillWindow -> Button오브젝트 -> Button Component -> On Click() -> MainUIController
+-> MoveWindow -> 2
+
+- Controller -> MainUIController -> WindowAnims -> Size -> 3
+- Controller -> MainUIController -> Element 0 -> PlayerWindow
+- Controller -> MainUIController -> Element 1 -> ColleagueWindow 
+- Controller -> MainUIController -> Element 2 -> IAPWindow
+
+- PlayerButton -> 복사 붙여넣기 2번
+- PlayerButton(1) -> 이름수정 : ColleagueButton
+- PlayerButton(2) -> 이름수정 : IAPButton
+
+- PlayerButton & ColleagueButton & IAPButton 동시선택 -> Add Component -> Box Collider
+- Box Collider의 Size X & Y를 Transform의 Scale과 맞춘다.
+
+- SkillWindow -> 이름수정 : IAPWindow
+
+- Text Compnent -> Paragraph -> Best Fit을 체크
+- HTMP 마크업형식
+=> <b>Col</b>league -> Col부분만 텍스트가 두꺼워진다.
+=> <color=#0B00BA>Col</color>league
 
 
 
+// ------------------------------------------------------------------------------
 
-
-
-
-
-
+unity soules like tutorial
+IK Animation
+Navigation mesh
+AI Agent
 
 
 

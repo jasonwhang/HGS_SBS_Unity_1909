@@ -11,7 +11,8 @@ public class Colleague : MonoBehaviour
     private Transform mEffectPos;
     private Animator mAnim;
 
-    private string mName;
+    // 2019.12.17 화요일 - 변수 삭제
+    //private string mName;
     private int mID;
 
     private void Awake()
@@ -19,10 +20,14 @@ public class Colleague : MonoBehaviour
         mRB2D = GetComponent<Rigidbody2D>();
         mAnim = GetComponent<Animator>();
     }
-    // Start is called before the first frame update
-    public void Init(string Name, int id, float period)
+
+    // 2019.12.17 화요일 - 매개변수 삭제
+    //public void Init(string Name, int id, float period)
+    public void Init(int id, float period)
     {
-        mName = Name;
+        // 2019.12.17 화요일 - 코드 삭제
+        //mName = Name;
+
         mID = id;
         StartCoroutine(Movement());
         StartCoroutine(Function(period));
@@ -65,9 +70,8 @@ public class Colleague : MonoBehaviour
         while(true)
         {
             yield return term;
+            // 스폰해야될 이펙트의 위치를 JobFinish함수에서 넘겨주는 것이 좋다.
             ColleagueController.Instance.JobFinish(mID);
-
-            Debug.LogFormat("{0}({1}) fnish job cureent time is {2}", mName, mID, Time.time);
         }
     }
 }

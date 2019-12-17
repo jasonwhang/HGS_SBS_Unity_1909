@@ -24,6 +24,11 @@ public class ColleagueController : MonoBehaviour
     //[SerializeField]
     private List<UIElement> mElementList;
 
+    // 2019.12.17 화요일 - 변수 추가 - 2교시 1번째
+    private List<Colleague> mSpawnedList;
+    [SerializeField]
+    private Sprite[] mIconArr;
+
     private void Awake()
     {
         if(Instance == null)
@@ -38,7 +43,9 @@ public class ColleagueController : MonoBehaviour
         mDataArr[0] = new ColleagueData();
         mDataArr[0].Name = "No.1";
         mDataArr[0].Level = 0;
-        mDataArr[0].Contents = "{0}초 마다 {1}골드를 획득합니다.";
+        // 텍스트 색깔을 바꾸는 방법
+        // 띄어쓰기를 하면 안된다. 영문자는 대문자든 소문자든지 상관없다.
+        mDataArr[0].Contents = "<color=ff0000ff>{1}</color>초 마다 <color=0000ffff>{0}</color>골드를 획득합니다.";
         mDataArr[0].JobTime = 1.1f;
         mDataArr[0].JobType = eJobType.Touch;
         // 2019.12.17 화요일 - 코드 추가
@@ -49,7 +56,7 @@ public class ColleagueController : MonoBehaviour
         mDataArr[1] = new ColleagueData();
         mDataArr[1].Name = "No.2";
         mDataArr[1].Level = 0;
-        mDataArr[1].Contents = "{0}초 마다 한번씩 터치를 해줍니다.";
+        mDataArr[1].Contents = "<color=#FF0000FF>{1}초 마다 한번씩 터치를 해줍니다.";
         mDataArr[1].JobTime = 1f;
         mDataArr[1].JobType = eJobType.Touch;
         // 2019.12.17 화요일 - 코드 추가
@@ -60,7 +67,7 @@ public class ColleagueController : MonoBehaviour
         mDataArr[2] = new ColleagueData();
         mDataArr[2].Name = "No.3";
         mDataArr[2].Level = 0;
-        mDataArr[2].Contents = "{0}초 마다 {1}골드를 획득합니다.";
+        mDataArr[2].Contents = "<color=ff0000ff>{1}</color>초 마다 <color=0000ffff>{0}</color>골드를 획득합니다.";
         mDataArr[2].JobTime = 1.5f;
         mDataArr[2].JobType = eJobType.Gold;
         // 2019.12.17 화요일 - 코드 추가
@@ -151,9 +158,31 @@ public class ColleagueController : MonoBehaviour
     // AddLevel을 누르면 묻지도 따지지도 않고 동료캐릭터가 스폰이 되도록 설정
     public void AddLevel(int id, int amount)
     {
-        Colleague newCol = Instantiate(mPrefabArr[id]);
-        newCol.transform.position = mSpawnPos.position;
-        newCol.Init(mDataArr[id].Name, id, mDataArr[id].JobTime);
+        // 2019.12.17 화요일 - if문 추가
+        if (mDataArr[id].Level == 0)
+        {
+            Colleague newCol = Instantiate(mPrefabArr[id]);
+            newCol.transform.position = mSpawnPos.position;
+
+            // 2019.12.17 화요일 - 매개변수 삭제
+            //newCol.Init(mDataArr[id].Name, id, mDataArr[id].JobTime);
+            newCol.Init(id, mDataArr[id].JobTime);
+
+            // 2019.12.17 화요일 - 코드 추가
+            mSpawnedList.Add(newCol);
+        }
+
+        // 2019.12.17 화요일 - 코드 추가
+        // 레벨을 실질적으로 올려준다.
+        mDataArr[id].Level += amount;
+        // 2019.12.17 화요일 - 코드 추가
+        mDataArr[id].ValueCurrent += mDataArr[id].Level;
+        // 2019.12.17 화요일 - 코드 추가
+        mDataArr[id].CostCurrent += mDataArr[id].Level;
+
+        // 2019.12.17 화요일 - 코드 추가
+        mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+                               mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
     }
 }
 public class ColleagueData

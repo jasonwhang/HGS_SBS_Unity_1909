@@ -42,8 +42,9 @@ public class UIElement : MonoBehaviour
     public void Renew(string contents, string purchaseText, int level,
                       double value, double cost,double time)
     {
-        mContentsText.text = string.Format(contents, time.ToString("N1"),
-                                           value.ToString());
+        //mContentsText.text = string.Format(contents, time.ToString("N1"),
+        //                                   value.ToString());
+        mContentsText.text = string.Format(contents, value.ToString(), time.ToString("N1"));
 
         // 2019.12.17 화요일 - 코드 추가
         // N0 = 소수점 단위 밑으로는 버리도록 텍스트를 처리

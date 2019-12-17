@@ -84,18 +84,46 @@ private void Awake()
 - Init함수에 추가해준 변수를 초기화
 
 // ------------------------------------------------------------------------------
+9. 동료캐릭터를 생성하고 배치하는 기능을 만들어보자.
+
+- ColleagueController.cs에서 AddLevel을 통해 동료캐릭터를 생성하고 배치하고 초기화를 한다.
+- ColleagueController.cs에서 TempInstanciate함수를 만들어준다.
+- 빈 오브젝트 생성 -> 이름수정 : ColleagueController
+- ColleagueController오브젝트를 Controller오브젝트 하위로 드래그 앤 드롭
+- ColleagueController -> Add Component -> ColleagueController.cs
+- ColleagueController.cs -> Prefab : Size - 3
+- 3개의 Prefab을 연결시켜주기
+- 빈 오브젝트로 만들어서 동료캐릭터의 스폰위치를 설정해주고 연결시켜준다.
+- UICanvas에 Button을 만들어주고 On Click()에 ColleagueController오브젝트를 연결한다.
+- TempInstatiate함수를 호출해주고 생성해줄 동료캐릭터의 ID를 그 아래에 입력해준다.
+
+// ------------------------------------------------------------------------------
+10. 버튼을 눌렀을 때 TouchArea에 버튼이 있으면 같이 눌리는 현상을 막기
+
+- Button에 BoxCollider를 추가해주어서 Button의 크기만큼 Size를 조정하기
+- 하지만 이 방법은 약간 편법이라고 하셨다.
 
 
+// ------------------------------------------------------------------------------
+11. 데이터클래스에서 동료캐릭터의 기능을 구분해주기 위한 설계를 해주기
 
+- ColleagueController.cs
+=> 데이터를 가지고서 조작하는 스크립트
+- Colleague.cs
+=> 기능을 가지고 있는 스크립트
+- ColleagueData클래스
+=> 데이터만 가지고 있는 클래스
 
+- ColleagueData에 기능별유형에 해당하는 변수를 추가해주기
+- enum으로 JobType을 만들어주기
 
+// ------------------------------------------------------------------------------
+12. ColleagueController.cs에서 동료캐릭터의 기능을 불러오는 방법
 
+싱글턴
+[Serialize]
 
-
-
-
-
-
+// ------------------------------------------------------------------------------
 
 
 

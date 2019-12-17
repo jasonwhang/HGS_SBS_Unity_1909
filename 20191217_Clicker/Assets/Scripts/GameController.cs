@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
     private double mGold;
     public double Gold {
         get { return mGold; }
-        set 
+        set
         {
             mGold = value;
         }

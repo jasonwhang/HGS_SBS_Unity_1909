@@ -30,7 +30,7 @@ y = base * weight(위에 지수 : Level) * 알파
 클릭커게임은 기본적으로 지수함식의 공식을 사용한다.
 
 // ------------------------------------------------------------------------------
-2. 공식 만들어주기
+2. 공식 만들어주기위하여 변수 추가와 초기화
 
 - ColleagueData에 변수 추가
 - Awake함수에 동료캐릭터의 데이터를 써준 부분에 새로 추가한 변수에 대한 초기화값을 설정해주기
@@ -38,7 +38,40 @@ y = base * weight(위에 지수 : Level) * 알파
 => Base가 Current값보다 높으면 원래 그래프보다 성장폭이 커질 가능성이 있다.
 
 // ------------------------------------------------------------------------------
+3. AddLevel함수에서 공식 만들어주기
 
+- 수정할 코드
+mDataArr[id].Level += amount;
+mDataArr[id].ValueCurrent += mDataArr[id].Level;
+mDataArr[id].CostCurrent += mDataArr[id].Level;
+mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+                       mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent,
+                       mDataArr[id].JobTime);
+
+- 수정한 코드
+mDataArr[id].ValueCurrent = mDataArr[id].ValueBase *
+                            Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+
+mDataArr[id].CostCurrent = mDataArr[id].CostBase *
+                            Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+
+// ------------------------------------------------------------------------------
+4. Level이 텍스트에 나오게 만들어주기
+
+- UIElement.cs ->Renew함수 -> 코드 추가
+mLevelText.text = "LV." + level.ToString();
+
+// ------------------------------------------------------------------------------
+5. 텍스트에 나오는 숫자를 깔끔하게 보여주게 하기
+
+- 골드가 1000이 넘어가면 1K이렇게 단위가 나오게 하기
+- 골드를 획득하는 숫자양을 표시해 줄 때 모든 숫자가 표시되는데 이것을 깔끔하게 보여지게 해주자.
+
+- UnitBuilder.cs를 만들어준다.
+=> 이 클래스는 UnityEngine이 필요없기 때문에 static class로 만들어준다.
+
+- UIElement.cs에서 mContentsText.text와 mCostText.text를 만들어준 UnitBuilder의 함수를 호출하여
+Text를 표시해준다.
 
 
 

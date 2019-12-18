@@ -26,9 +26,20 @@ public class UIElement : MonoBehaviour
     }
     public void Renew(string contents, string purchaseText, int level, double value, double cost,double time)
     {
-        mContentsText.text = string.Format(contents, value.ToString(),
-                                                     time.ToString("N1"));
-        mCostText.text = cost.ToString("N0");
+        // 2019.12.18 수요일 - 코드 추가
+        // string이 합쳐질 때 1개인 경우에는 이렇게 해도 상관없지만
+        // 두개 이상일 때는 string.format을 사용하는 것이 좋다.
+        mLevelText.text = "LV." + level.ToString();
+
+        //mContentsText.text = string.Format(contents, value.ToString(),
+        //                                             time.ToString("N1"));
+
+        // 2019.12.18 수요일 - 코드 수정
+        mContentsText.text = string.Format(contents, UnitBuilder.GetUnitStr(value),
+                                             time.ToString("N1"));
+        //mCostText.text = cost.ToString("N0");
+        mCostText.text = UnitBuilder.GetUnitStr(cost);
+
         mPurchaseText.text = purchaseText;
     }
 }

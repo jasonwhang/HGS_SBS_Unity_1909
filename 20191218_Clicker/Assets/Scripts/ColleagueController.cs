@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+// 2019.12.18 수요일 - 코드 추가
+using System;
 
 public class ColleagueController : MonoBehaviour
 {
@@ -37,7 +39,7 @@ public class ColleagueController : MonoBehaviour
         mDataArr[0].Level = 0;
         mDataArr[0].Contents = "<color=#ff0000ff>{1}초</color> 마다 <color=#0000ffff>{0}골드</color>를 획득합니다.";
         mDataArr[0].JobTime = 1.1f;
-        mDataArr[0].JobType = eJobType.Touch;
+        mDataArr[0].JobType = eJobType.Gold;
         mDataArr[0].ValueCurrent = 1;
         // 2019.12.18 수요일 - 코드 추가
         // 소수점의 기본 자료형은 double이기 때문에 뒤에 d를 붙이지 않아도 된다.
@@ -128,11 +130,32 @@ public class ColleagueController : MonoBehaviour
             newCol.Init(id, mDataArr[id].JobTime);
             mSpawnedList.Add(newCol);
         }
+
+        // 2019.12.18 수요일 - 코드 수정
+        //mDataArr[id].Level += amount;
+        //mDataArr[id].ValueCurrent += mDataArr[id].Level;
+        //mDataArr[id].CostCurrent += mDataArr[id].Level;
+        //mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+        //                       mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, 
+        //                       mDataArr[id].JobTime);
+
         mDataArr[id].Level += amount;
-        mDataArr[id].ValueCurrent += mDataArr[id].Level;
-        mDataArr[id].CostCurrent += mDataArr[id].Level;
+
+        // float로 하면 double형태의 숫자를 감당해낼 수 없기 때문에 오버플로우가 나서 infinity가 뜨게 될 것이다.
+        //mDataArr[id].ValueCurrent = mDataArr[id].ValueBase *
+        //                            Mathf.Pow((float)mDataArr[id].ValueWeight, mDataArr[id].Level);
+
+        mDataArr[id].ValueCurrent = mDataArr[id].ValueBase *
+                                    Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+
+        mDataArr[id].CostCurrent = mDataArr[id].CostBase *
+                                    Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+
         mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
                                mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
+
+        // Random이 UntyEngine.Random인지 System.Random인지 모호하기 때문에 에러가 발생한다.
+        UnityEngine.Random.Range(0, 1);
     }
 }
 public class ColleagueData

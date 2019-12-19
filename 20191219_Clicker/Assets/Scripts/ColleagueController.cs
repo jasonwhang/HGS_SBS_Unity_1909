@@ -115,8 +115,10 @@ public class ColleagueController : MonoBehaviour
             mSpawnedList.Add(newCol);
         }
         mDataArr[id].Level += amount;
-        mDataArr[id].ValueCurrent = mDataArr[id].ValueBase * Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
-        mDataArr[id].CostCurrent = mDataArr[id].CostBase * Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+        mDataArr[id].ValueCurrent = mDataArr[id].ValueBase * 
+                                    Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+        mDataArr[id].CostCurrent = mDataArr[id].CostBase * 
+                                   Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
         mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
                                mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
     }

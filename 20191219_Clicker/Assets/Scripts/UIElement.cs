@@ -24,12 +24,11 @@ public class UIElement : MonoBehaviour
         mPurchaseButton.onClick.AddListener(()=> { callback(mID, 1); });
         Renew(contents, purchaseText, level, value, cost, time);
     }
-    public void Renew(string contents, string purchaseText, int level, double value, 
-        double cost,double time)
+    public void Renew(string contents, string purchaseText, int level, double value, double cost,double time)
     {
-        mLevelText.text = "LV." + level.ToString();
+        mLevelText.text = "LV. " + level.ToString();
         mContentsText.text = string.Format(contents, UnitBuilder.GetUnitStr(value),
-                                             time.ToString("N1"));
+                                                     time.ToString("N1"));
         mCostText.text = UnitBuilder.GetUnitStr(cost);
         mPurchaseText.text = purchaseText;
     }

@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-// 2019.12.18 수요일 - 클래스 추가
-
 public static class UnitBuilder
 {
     private static readonly string[] UNIT_ARR = { "", "K", "M", "B", "T", "aa", "ab", "ac" };
@@ -13,11 +11,11 @@ public static class UnitBuilder
 
         string result = "";
 
-        if (splited.Length > 1)
+        if(splited.Length > 1)
         {
             char[] underPoint = splited[1].ToCharArray();
-            result = string.Format("{0}.{1}{2} {3}", splited[0], underPoint[0], 
-                                   underPoint[1], UNIT_ARR[splited.Length - 1]);
+            result = string.Format("{0}.{1}{2} {3}", splited[0], underPoint[0],
+                                    underPoint[1], UNIT_ARR[splited.Length - 1]);
         }
         else
         {

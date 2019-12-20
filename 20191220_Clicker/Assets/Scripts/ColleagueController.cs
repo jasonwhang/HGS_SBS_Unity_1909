@@ -20,11 +20,11 @@ public class ColleagueController : MonoBehaviour
     private UIElement mElementPrefab;
     [SerializeField]
     private Transform mScrollTarget;
-
+    
     private List<UIElement> mElementList;
     private void Awake()
     {
-        if (Instance == null)
+        if(Instance == null)
         {
             Instance = this;
         }
@@ -77,7 +77,7 @@ public class ColleagueController : MonoBehaviour
     {
         mElementList = new List<UIElement>();
         mSpawnedList = new List<Colleague>();
-        for (int i = 0; i < mDataArr.Length; i++)
+        for (int i =0; i < mDataArr.Length; i++)
         {
             UIElement elem = Instantiate(mElementPrefab, mScrollTarget);
             elem.Init(null, i, mDataArr[i].Name, mDataArr[i].Contents, "구매",
@@ -86,12 +86,12 @@ public class ColleagueController : MonoBehaviour
                       AddLevel);
             mElementList.Add(elem);
         }
-
+        
     }
     public void JobFinish(int id)
     {
         ColleagueData data = mDataArr[id];
-        switch (data.JobType)
+        switch(data.JobType)
         {
             case eJobType.Gold:
                 GameController.Instance.Gold += data.ValueCurrent;
@@ -105,18 +105,37 @@ public class ColleagueController : MonoBehaviour
         }
     }
 
+    private int mCurrentId, mCurrentAmount;
     public void AddLevel(int id, int amount)
     {
-        // AddLevel버튼이 눌렸을 때 기능을 구현
-        // AddLevel에 대한 기능을 적용시키는 함수를 따로 구현시켜 delegate로 호출
-
-        // 2019.12.19 목요일 - 코드 추가
-        GameController.Instance.goldConsumeCallback = () => { ApplyLevel(id, amount); };
+        //mCurrentId = id;
+        //mCurrentAmount = amount;
+        //GameController.Instance.GoldConsumeCallback = ApplyLevel;
+        GameController.Instance.GoldConsumeCallback = () => { ApplyLevel2(id, amount); };
+        //GameController.Instance.GoldConsumeCallback = () =>
+        // {
+        //     if (mDataArr[id].Level == 0)
+        //     {
+        //         Colleague newCol = Instantiate(mPrefabArr[id]);
+        //         newCol.transform.position = mSpawnPos.position;
+        //         newCol.Init(id, mDataArr[id].JobTime);
+        //         mSpawnedList.Add(newCol);
+        //     }
+        //     mDataArr[id].Level += amount;
+        //     mDataArr[id].ValueCurrent = mDataArr[id].ValueBase * Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+        //     mDataArr[id].CostCurrent = mDataArr[id].CostBase * Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+        //     mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+        //                            mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
+        // };
         GameController.Instance.Gold -= mDataArr[id].CostCurrent;
-    }
 
-    // 2019.12.19 목요일 - 함수 추가
-    public void ApplyLevel(int id, int amount)
+        
+    }
+    public void ApplyLevel()
+    {
+       
+    }
+    public void ApplyLevel2(int id, int amount)
     {
         if (mDataArr[id].Level == 0)
         {
@@ -125,18 +144,13 @@ public class ColleagueController : MonoBehaviour
             newCol.Init(id, mDataArr[id].JobTime);
             mSpawnedList.Add(newCol);
         }
-
         mDataArr[id].Level += amount;
-        mDataArr[id].ValueCurrent = mDataArr[id].ValueBase *
-                                    Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
-        mDataArr[id].CostCurrent = mDataArr[id].CostBase *
-                                   Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+        mDataArr[id].ValueCurrent = mDataArr[id].ValueBase * Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+        mDataArr[id].CostCurrent = mDataArr[id].CostBase * Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
         mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
-                               mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, 
-                               mDataArr[id].JobTime);
+                               mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
     }
 }
-
 public class ColleagueData
 {
     public string Name;

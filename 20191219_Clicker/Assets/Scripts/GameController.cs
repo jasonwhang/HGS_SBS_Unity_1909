@@ -15,7 +15,6 @@ public class GameController : MonoBehaviour
         set
         {
             // 2019.12.19 목요일 - 코드 추가
-            // 
             if(value >= 0)
             {
                 if(mGold > value)
@@ -40,10 +39,15 @@ public class GameController : MonoBehaviour
                     // 하지만 우리는 지금 get;set;을 사용하려고 하기 때문에 이렇게 약간 어려워진것이다.
                 }
                 mGold = value;
+                // Show UI Gold
+                // 2019.12.19 목요일 - 코드 추가
+                MainUIController.Instance.ShowGold(mGold);
             }
             else
             {
-
+                // 2019.12.19 목요일 - 코드 추가
+                // 돈이 부족한 경우
+                Debug.Log("Not enough gold");
             }
         }
     }
@@ -65,6 +69,9 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 2019.12.19 목요일 - 코드 추가
+        MainUIController.Instance.ShowGold(0);
+
         int id = Random.Range(0, GemController.MAX_GEM_COUNT);
         mGem.GetNewGem(id);
     }

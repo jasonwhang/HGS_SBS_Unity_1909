@@ -1,0 +1,180 @@
+2019.12.20 금요일 - 수업내용
+
+// ------------------------------------------------------------------------------
+1. 스테이지를 넘어갈 때마다 이펙트를 터뜨리는 기능
+
+- GemController.cs
+
+=> EffectPool변수를 TouchManager.cs만 현재 들고 있다.
+=> GemController.cs에 EffectPool자료형을 가진 변수를 추가
+=> 변수 추가 : private EffectPool mEffectPool;
+
+- Effect를 쓰는 공간이 TouchManager.cs와 GemController.cs 두 군데가 되었다.
+=> TouchManager.cs에 이펙트에 관한 정보를 넣어두는 것은 좋지 않다.
+=> 이거에 관한 클래스를 따로 만들어서 이펙트를 관리하는 클래스를 만들자.
+
+- EnemAndData.cs를 만들어서 공용으로 사용되는 Enem이나 Data클래스를 넣어두자.
+=> 이 경우 유니티 관련 using들은 모두 필요가 없다.
+=> using System;은 추가를 시켜주자.
+
+- public enum eEffectType를 만들어주자.
+
+- TouchManager.cs에서 effectPool로 했던 부분을 수정해준다.
+=> 수정 전 : Timer effect = mEffectPool.GetFromPool(0);
+=> 수정 후 : Timer effect = mEffectPool.GetFromPool((int)eEffectType.Touch);
+
+- Controller -> GemController -> mEffectPool -> EffectPool오브젝트 연결
+- EffectPool오브젝트 -> Element 1 -> PhaseShiftEffect Prefab을 연결
+- PhaseShiftEffect Prefab -> Time.cs -> mTime -> 0.5초에서 1초로 수정
+
+- 스테이지가 넘어갈 때 이펙트가 터지는 위치는 어디에 넣어줄까?
+=> mGem이라는 변수에서 EmeraldOre01오브젝트의 위치를 통해 이펙트를 터뜨리는 위치를 설정해주자.
+
+// ------------------------------------------------------------------------------
+2. 스테이지에 관련된 설계를 해보자.
+
+- 스테이지에 관련된 변수는 어디 클래스에서 관리하는 것이 좋은가?
+=> 현재 규모로는 GameController.cs에서 해준다.
+=> 나중에는 따로 StageController를 만들어서 관리를 해주어야 한다.
+
+- 스테이지가 넘어가는 시점을 GameController.cs에서 Touch함수에서 알수가 있다.
+=> 그러므로 mStage에서 현재는 set프로퍼티를 만들어줄 필요는 없다.
+=> get프로퍼티를 만들어서 GemController.cs에서 스테이지에 대한 정보를 가져올 수 있도록 해주자.
+
+- 스테이지가 올라갈때마다 젬이 새롭게 나올 때 어떻게 변화되는지 공식을 설정해보자.
+=> GemController.cs에서 GetNewGem함수에서 수정을 해준다.
+=> mMaxHP = 10 * Math.Pow(1.4, GameController.Instance.StageNumber);
+
+- 스테이지가 올라가 젬을 클리어 할 때마다 골드획득도 올라가는 공식을 설정해보자.
+=> GemController.cs에서 AddProgress함수에서 수정을 해준다.
+=> GameController.Instance.Gold += 10 * Math.Pow(1.05, 
+GameController.Instance.StageNumber);
+
+- 기획자가 공식을 Inspector상에서 쉽게 수정할 수 있도록 하드코딩된 값들을 변수로 바꾸어주자
+=> GemController.cs에 변수를 추가해준다.
+=> private float mHPBase = 10, mHPWeight = 1.4f, mRewardBase = 10, mRewardWeight = 1.5f;
+
+- 추가된 변수를 계산공식에 수정하여 넣어주자.
+=> mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber);
+=> GameController.Instance.Gold += mRewardBase * Math.Pow(mRewardWeight,
+                                     GameController.Instance.StageNumber);
+
+// ------------------------------------------------------------------------------
+3. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

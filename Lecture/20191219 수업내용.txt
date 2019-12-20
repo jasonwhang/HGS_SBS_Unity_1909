@@ -71,23 +71,141 @@ public double Gold {
 
 
 // ------------------------------------------------------------------------------
+3. 골드 소모에 대한 기능을 Colleage에 연결해보기 위하여 delegate에 함수를 연결하는 3가지의 방법 
+
+- ColleagueController.cs -> AddLevel -> 코드 추가
+
+- AddLevel을 적용하는 함수를 따로 만들어주어야 한다.
+=> 이 함수를 Callback에 연결시켜주어야 한다.
 
 
+- 첫번째 방법
+=> 클래스에 필드멤버변수를 추가하여 에러나는 변수를 해결해준다.
+=> private int mCurrentID, mCurrentAmount;
+GameController.Instance.goldConsumeCallback = ApplyLevel;
+
+- 두번째 방법
+=> 무기명 함수로 등록해버리기(id와 amount를 해결하는 방법)
+GameController.Instance.goldConsumeCallback = () =>
+{
+    if (mDataArr[id].Level == 0)
+    {
+        Colleague newCol = Instantiate(mPrefabArr[id]);
+        newCol.transform.position = mSpawnPos.position;
+        newCol.Init(id, mDataArr[id].JobTime);
+        mSpawnedList.Add(newCol);
+    }
+    mDataArr[id].Level += amount;
+    mDataArr[id].ValueCurrent = mDataArr[id].ValueBase *
+                                Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+    mDataArr[id].CostCurrent = mDataArr[id].CostBase *
+                               Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+    mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+                           mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, 
+                           mDataArr[id].JobTime);
+};
+
+- 세번째 방법
+=> 함수에 매개변수를 추가하여 delegate에 매개변수까지 추가해서 넘겨주는 방법
+=> GameController.Instance.goldConsumeCallback = () => { ApplyLevel2(id, amount); };
+public void ApplyLevel2(int id, int amount)
+{
+    if (mDataArr[id].Level == 0)
+    {
+        Colleague newCol = Instantiate(mPrefabArr[id]);
+        newCol.transform.position = mSpawnPos.position;
+        newCol.Init(id, mDataArr[id].JobTime);
+        mSpawnedList.Add(newCol);
+    }
+    mDataArr[id].Level += amount;
+    mDataArr[id].ValueCurrent = mDataArr[id].ValueBase *
+                                Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+    mDataArr[id].CostCurrent = mDataArr[id].CostBase *
+                               Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+    mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+                           mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, 
+                           mDataArr[id].JobTime);
+}
+
+- 강사님께서 실제 게임에 사용한 delegate방식
+Delegates.VoidCallBack PurchaseSuccessCallback = () => { LevelUpCallBack(id,amount); };
+
+NoticeSomething()
+  Callback = callback
+
+ConfirmButtonListener()
+  CancleCallBack = null;
+  Cancle[0].onClick.Invoke();
+  GameController.control.MoneyCallBack = CallBack;
+
+set
+{
+  if(value >= 0)
+  {
+      double temp = user.currency;
+      user.currency = value;
+      MainScreenUIController.Instance.ShowMoneyIn_Decrease(temp, user.currency - temp);
+
+      if(MoneyCallBack != null)
+      {
+          MoneyCallBack(); 
+          MoneyCallBack = null;
+      }
+  }
+  else
+  {
+
+  }
+}
+
+// ------------------------------------------------------------------------------
+4. 골드를 획득하는 기능을 만들어보자.
+
+- Stage가 Clear가 되는 시점을 GemController.cs에서 AddProgress함수에서 진행을 해준다.
+=> 간단하게 스테이지가 클리어가 될 때마다 300원씩 증가할 수 있도록 해주자.
+GameController.Instance.Gold += 300;
+
+// ------------------------------------------------------------------------------
+5. 소유한 골드에 대한 UI를 만들어주자.
+- UICanvas -> UI -> Image -> 이름수정 : PointField -> 위치와 크기 수정
+- PointField -> UI -> Text -> Font -> GodoB -> Font Size : 20
+
+// ------------------------------------------------------------------------------
+6. GoldText를 제어해주기 위한 기능을 만들어주가.
+
+- MainUIController.cs
+=> using UI추가
+=> 변수 추가
+=> ShowGold함수 추가
+
+- GameController.cs
+=> Gold의 Set프로퍼티에 코드 추가
+=> start함수에 ShowGold함수 호출
+
+// ------------------------------------------------------------------------------
+7. MainUIController오브젝트에서 GoldText오브젝트를 연결
+- Controller -> MainUIController -> goldtext -> 연결
+- goldtext의 오브젝트가 Window가 가려져서 순서를 바꾸어준다.
+
+// ------------------------------------------------------------------------------
+8. TouchEffect의 Prefab을 바꾸어주기
+
+- TouchEffect -> StartLiftTime : 1, Start Speed : 2, S
+- TouchEffect -> Renderer -> Max Particle Size -> 0.1
 
 
+// ------------------------------------------------------------------------------
+9. MainUIController.cs에 ShowProgress
 
+- 수정 전
+        float progress = (float)(current / max);
+        //hack build Gauge progress string
+        string progressString = progress.ToString("P0");
 
-
-
-
-
-
-
-
-
-
-
-
+- 
+string progressString = string.Format("{0} / {1}",
+                                      UnitBuilder.GetUnitStr(current),
+                                      UnitBuilder.GetUnitStr(max));
 
 
 

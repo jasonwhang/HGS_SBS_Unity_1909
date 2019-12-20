@@ -1,5 +1,15 @@
 2019.12.20 금요일 - 수업내용
 
+for(int i = 0; i < data.Length; i++)
+{
+    data[i].Level = 10;
+}
+
+foreach(ColleagueData e in data)
+{
+     e.Level = 10;
+}
+
 // ------------------------------------------------------------------------------
 1. 스테이지를 넘어갈 때마다 이펙트를 터뜨리는 기능
 
@@ -60,15 +70,55 @@ GameController.Instance.StageNumber);
                                      GameController.Instance.StageNumber);
 
 // ------------------------------------------------------------------------------
-3. 
+3. 강사님께서 작성한 StageController.cs가 필요한 경우
+
+LoadCSVWidthIDMap(out inofs)
+
+Load(int roundIndex, int catid, bool stayStage)
+{
+stageUp = stayStage;
+currentStageIndex = roundIndex;
+}
+
+StageController.instance.Load(user.Stage, user catID, )
+
+bool bTimeToCatNaming = CatItemController.instance.ShowNewElement(current);
+
+// 업적시스템
+AchievementController.instance.AddProgress(eAchievementID.TotalNaming);
+// 환생시스템
+PlayerItemController.instance.CheckRebirthOn(currentStageIndex);
+
+public bool CheckDrop()
+// 10스테이지마다 보스고양이를 클리어하고 보상이 나올 때 일정시간이 지나는 동안 다음스테이지로 넘어가면
+// 안되게 하기 위해 코루틴을 돌렸다.
+StartCoroutine(Opendropwin(DropNone, DropNoneIcon, false);
+UIController.instance.SetActiveBarAndSkillHud(false);
+DropAnimOj.SetActive(true);
+UIController.instance.OpenStageScreenWindow();
 
 
 
+OpenDropwin(string result, Sprite image, bool success)
+yield return new WaitForSecond(3);
+DropUIController.instance.
 
+BackwardStage
+currentStageIndex--;
+StartStage();
 
+StartStage(int catid = -1, bool isLoad = false)
+SetCatWithCalcHPAndGold(catid);
+if(currentRountType >= eRoundType.Elite)
+GameController.instance.StartCountDown(CountDownTime, isLoad);
+if((currentStageIndex % 100 == 0)
 
+// ------------------------------------------------------------------------------
+4. 
 
-
+- TextEffect.cs -> 
+- TextEffectPool.cs
+- ColleagueController.cs -> mTextEffectPoo;
 
 
 

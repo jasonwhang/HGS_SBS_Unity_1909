@@ -9,5 +9,6 @@ using System.Collections.Generic;
 public enum eEffectType
 {
     Touch,
-    PhaseShift
+    PhaseShift,
+    EarnGold
 }

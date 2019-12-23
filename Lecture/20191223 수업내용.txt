@@ -99,6 +99,8 @@ elem.Init(mIconArr[i], i, mDataArr[i].Name, mDataArr[i].Contents, "구매",
 // ------------------------------------------------------------------------------------
 4. 
 
+- PlayerInfoController.cs를 만들어준다.
+- Value Current는 스킬이 레벨업을 하지 않는 0의 상태에서는 기본값이 0이어야 한다.
 
 
 

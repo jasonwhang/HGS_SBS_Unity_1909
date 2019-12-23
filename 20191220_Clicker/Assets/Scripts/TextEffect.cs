@@ -7,6 +7,7 @@ public class TextEffect : MonoBehaviour
 {
     [SerializeField]
     private Text mText;
+
     public void ShowText(string data)
     {
         mText.text = data;

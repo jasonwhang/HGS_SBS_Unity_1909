@@ -191,6 +191,155 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50804664}
   m_CullTransparentMesh: 0
+--- !u!1 &63426298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 63426299}
+  - component: {fileID: 63426300}
+  m_Layer: 0
+  m_Name: PlayerInfoController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &63426299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63426298}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 308121959}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &63426300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63426298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0845e49531fdbea47bb28b27b02fdc76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mInfos:
+  - Name: "\uC138\uACF5\uC220 \uAC15\uD654"
+    Contents: "\uD130\uCE58\uB7C9 {0}\uD3EC\uC778\uD2B8\uB9CC\uD07C \uC870\uAC01"
+    ID: 0
+    IconID: 0
+    Level: 1
+    ValueType: 0
+    CoolTime: 0
+    CoolTImeCurrent: 0
+    Duration: 0
+    ValueCurrent: 1
+    ValueWeight: 1.03
+    ValueBase: 1
+    CostCurrent: 10
+    CostWeight: 1.08
+    CostBase: 10
+  - Name: "\uC5F0\uC18D\uC138\uACF5"
+    Contents: "{1}\uCD08\uB3D9\uC548 {0}\uD68C \uCD94\uAC00 \uC138\uACF5"
+    ID: 1
+    IconID: 1
+    Level: 0
+    ValueType: 1
+    CoolTime: 300
+    CoolTImeCurrent: 0
+    Duration: 30
+    ValueCurrent: 0
+    ValueWeight: 0.2
+    ValueBase: 1
+    CostCurrent: 50
+    CostWeight: 1.1
+    CostBase: 50
+  - Name: "\uB3D9\uB8CC\uC791\uC5C5\uAC15\uC81C\uC644\uC218"
+    Contents: "\uB3D9\uB8CC\uC5D0\uAC8C \uC989\uC2DC{0}\uD68C \uAC15\uC81C \uC791\uC5C5\uC644\uC218"
+    ID: 2
+    IconID: 0
+    Level: 0
+    ValueType: 0
+    CoolTime: 600
+    CoolTImeCurrent: 0
+    Duration: 0
+    ValueCurrent: 0
+    ValueWeight: 0.2
+    ValueBase: 1
+    CostCurrent: 100
+    CostWeight: 1.1
+    CostBase: 100
+  - Name: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 \uC99D\uAC00"
+    Contents: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960\uC774 {0}\uC785\uB2C8\uB2E4."
+    ID: 3
+    IconID: 3
+    Level: 0
+    ValueType: 2
+    CoolTime: 0
+    CoolTImeCurrent: 0
+    Duration: 0
+    ValueCurrent: 0
+    ValueWeight: 0.02
+    ValueBase: 0.01
+    CostCurrent: 100
+    CostWeight: 1.1
+    CostBase: 100
+  - Name: "\uD06C\uB9AC\uD2F0\uCEEC \uD3EC\uC778\uD2B8 \uC99D\uAC00"
+    Contents: "\uD06C\uB9AC\uD2F0\uCEEC\uC2DC \uD3EC\uC778\uD2B8\uAC00 {0}\uB354 \uC624\uB985\uB2C8\uB2E4."
+    ID: 4
+    IconID: 4
+    Level: 0
+    ValueType: 2
+    CoolTime: 0
+    CoolTImeCurrent: 0
+    Duration: 0
+    ValueCurrent: 0
+    ValueWeight: 0.1
+    ValueBase: 0.2
+    CostCurrent: 100
+    CostWeight: 1.1
+    CostBase: 100
+  - Name: "\uACE8\uB4DC \uD68D\uB4DD\uB7C9 \uC99D\uAC00"
+    Contents: "\uC791\uC5C5\uC644\uB8CC \uBCF4\uC0C1\uAE08 {0} \uCD94\uAC00\uD68D\uB4DD\uD569\uB2C8\uB2E4."
+    ID: 5
+    IconID: 5
+    Level: 0
+    ValueType: 2
+    CoolTime: 0
+    CoolTImeCurrent: 0
+    Duration: 0
+    ValueCurrent: 0
+    ValueWeight: 0.1
+    ValueBase: 0.15
+    CostCurrent: 200
+    CostWeight: 1.1
+    CostBase: 200
+  - Name: "\uAD11\uBB3C\uCCB4\uB825 \uAC10\uC18C"
+    Contents: "\uC791\uC5C5 \uBAA9\uD45C \uD3EC\uC778\uD2B8\uB97C {0} \uB0AE\uCDA5\uB2C8\uB2E4."
+    ID: 6
+    IconID: 6
+    Level: 0
+    ValueType: 2
+    CoolTime: 0
+    CoolTImeCurrent: 0
+    Duration: 0
+    ValueCurrent: 0
+    ValueWeight: 0.05
+    ValueBase: 0.1
+    CostCurrent: 400
+    CostWeight: 1.4
+    CostBase: 400
 --- !u!1 &108973360
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,6 +987,7 @@ Transform:
   - {fileID: 1073829297}
   - {fileID: 628944255}
   - {fileID: 635673125}
+  - {fileID: 63426299}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

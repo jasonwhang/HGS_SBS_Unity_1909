@@ -12,9 +12,9 @@ public enum eTextEffectType
     ColleagueIncome
 }
 
-public enum eElementType
+public enum eValueType
 {
-    Player,
-    Colleague,
-    Rebirth
+    Expo,
+    Numeric,
+    Percent
 }

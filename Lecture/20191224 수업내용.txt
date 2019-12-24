@@ -52,11 +52,45 @@ void Start()
 - 만들어준 Prefab을 열어서 IconMask안에 있는 Icon을 따로 빼내고 IconMask를 삭제해준다.
 - 
 
+// ------------------------------------------------------------------------------------
+5. 문자열이 다르게 처리가 되게 하는 방법
+
+- UIElement.cs
+
+public void Renew(string contents, string purchaseText, int level, double value,
+                  double cost, double time, eValueType elemType = eValueType.Expo)
 
 
+string valueStr = "";
+switch (elemType)
+{
+    case eValueType.Percent:
+        valueStr = value.ToString("P0");
+        break;
+    case eValueType.Numeric:
+    case eValueType.Expo:
+        valueStr = UnitBuilder.GetUnitStr(value);
+        break;
+    default:
+        Debug.LogError("wrong value type : " + elemType);
+        break;
+}
+
+public void Init(Sprite icon, int id, string name,
+                 string contents, string purchaseText,
+                 int level, double value, double cost, double time,
+                 AnimHash.TwoIntPramCallback callback, eValueType valueType = eValueType.Expo)
 
 
+- EnumAndData.cs
+public enum eValueType
+{
+    Expo,
+    Numeric,
+    Percent
+}
 
+// ------------------------------------------------------------------------------------
 
 
 

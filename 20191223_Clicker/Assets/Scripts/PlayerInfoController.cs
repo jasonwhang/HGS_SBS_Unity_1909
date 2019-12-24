@@ -60,12 +60,12 @@ public class PlayerInfoController : MonoBehaviour
         // 이런 경우에는 switch로 구분을 하는 것이 좋다.
         switch(mInfos[id].ValueType)
         {
-            case ePlayerValueType.Expo:
+            case eValueType.Expo:
                 mInfos[id].ValueCurrent = mInfos[id].ValueBase *
                     Math.Pow(mInfos[id].ValueWeight, mInfos[id].Level);
                 break;
-            case ePlayerValueType.Numeric:
-            case ePlayerValueType.Percent:
+            case eValueType.Numeric:
+            case eValueType.Percent:
                 // 이렇게 break가 없이 case가 연결이 된 것이면
                 // 조건이 2개가 or로 연결이 된 것과 같은 의미이다.
                 // 즉, 조건이 Numeric이거나 Percent인 경우 case문 코드를 실행하라는 의미와 같다.
@@ -81,7 +81,8 @@ public class PlayerInfoController : MonoBehaviour
         // 여기서 문제점이 넘겨주어야 하는 double value값이 현재는 2가지의 방식이 존재한다.
         // double값이면 이 2가지의 방식을 모두 담아낼 수는 없다.
         mElementList[id].Renew(mInfos[id].Contents, "Level UP", mInfos[id].Level,
-                               mInfos[id].ValueCurrent, mInfos[id].CostCurrent, mInfos[id].Duration);
+                               mInfos[id].ValueCurrent, mInfos[id].CostCurrent, 
+                               mInfos[id].Duration, mInfos[id].ValueType);
     }
 
     // Update is called once per frame
@@ -101,7 +102,7 @@ public class PlayerInfo
     public int IconID;
     public int Level;
 
-    public ePlayerValueType ValueType;
+    public eValueType ValueType;
 
     public float CoolTime;
     public float CoolTImeCurrent;

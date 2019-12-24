@@ -32,19 +32,6 @@ public class GameController : MonoBehaviour
             }
         }
     }
-    //public double GetGGold()
-    //{
-    //    return mGold;
-    //}
-    //public void SetGGold(double value)
-    //{
-    //    if(mGold > value)
-    //    {
-    //        //consumed
-
-    //    }
-    //    mGold = value;
-    //}
 
     private int mStage;
     public int StageNumber

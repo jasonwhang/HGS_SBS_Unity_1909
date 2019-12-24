@@ -24,12 +24,37 @@ public class UIElement : MonoBehaviour
         mPurchaseButton.onClick.AddListener(()=> { callback(mID, 1); });
         Renew(contents, purchaseText, level, value, cost, time);
     }
-    public void Renew(string contents, string purchaseText, int level, double value, double cost,double time)
+
+    public void Renew(string contents, string purchaseText, int level, double value,
+              double cost, double time)
     {
         mLevelText.text = "LV. " + level.ToString();
+
         mContentsText.text = string.Format(contents, UnitBuilder.GetUnitStr(value),
                                                      time.ToString("N1"));
         mCostText.text = UnitBuilder.GetUnitStr(cost);
         mPurchaseText.text = purchaseText;
     }
+
+    //public void Renew(string contents, string purchaseText, int level, double value, 
+    //                  double cost,double time, eElementType elemType)
+    //{
+    //    mLevelText.text = "LV. " + level.ToString();
+
+    //    string valueStr = "";
+    //    switch (elemType)
+    //    {
+    //        case eElementType.Player:
+    //            valueStr = value.ToString("P0");
+    //            break;
+    //        case eElementType.Colleague:
+    //            valueStr = UnitBuilder.GetUnitStr(value);
+    //            break;
+    //    }
+
+    //    mContentsText.text = string.Format(contents, UnitBuilder.GetUnitStr(value),
+    //                                                 time.ToString("N1"));
+    //    mCostText.text = UnitBuilder.GetUnitStr(cost);
+    //    mPurchaseText.text = purchaseText;
+    //}
 }

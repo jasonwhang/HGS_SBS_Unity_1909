@@ -1,0 +1,184 @@
+2019.12.24 화요일 - 수업내용
+
+// ------------------------------------------------------------------------------------
+1. 
+
+// ------------------------------------------------------------------------------------
+2. PlayerInfoController.cs의 기능을 작성해준다.
+- 필요한 변수
+[SerializeField]
+private UIElement mElementPrefab;
+[SerializeField]
+private Transform mScrollTarget;
+private List<UIElement> mElementList;
+
+- 필요한 함수
+public void AddLevel(int id, int amount)
+{
+    GameController.Instance.GoldConsumeCallback = () => { ApplyLevelUp(id, amount); };
+    GameController.Instance.Gold -= mInfos[id].CostCurrent;
+}
+public void ApplyLevelUp(int id, int amount)
+{
+
+}
+
+- 필요한 세팅
+void Start()
+{
+    mElementList = new List<UIElement>();
+    for(int i = 0; i < mInfos.Length; i++)
+    {
+        UIElement element = Instantiate(mElementPrefab);
+        element.Init(null, i, mInfos[i].Name, mInfos[i].Contents, "Level UP", 
+                     mInfos[i].Level, mInfos[i].ValueCurrent, mInfos[i].CostCurrent,
+                     mInfos[i].Duration, AddLevel);
+
+        mElementList.Add(element);
+    }
+}
+
+// ------------------------------------------------------------------------------------
+3. 새로 만들어준 함수 AddLevel과 ApplyLevelUp함수의 기능을 만들어준다.
+- AddLevel함수
+
+- ApplyLevelUp함수
+
+// ------------------------------------------------------------------------------------
+4. PlayerElement Prefab을 만들기
+
+- ColleagueElement Prefab을 가져와서 이름을 PlayerElement로 수정한다.
+- 수정된 Prefab을 다시 Prefab폴더에 넣어 새롭게 만들어준다.
+- 만들어준 Prefab을 열어서 IconMask안에 있는 Icon을 따로 빼내고 IconMask를 삭제해준다.
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

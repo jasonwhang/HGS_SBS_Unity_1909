@@ -148,9 +148,59 @@ private void LoadColleague()
 => 하지만 GameScene을 한 번 클릭하고 2번키를 누르면 MDataArr의 Size가 3이되면서 데이터가 들어온다.
 
 // ------------------------------------------------------------------------------------
+6. PlayerInfo의 데이터들을 Inspector에서 가져와서 Json으로 저장하고 불러오는 방법
+
+- PlayerInfoController.cs가 데이터에 대한 정보를 가지고 있다.
+- 가지고 있는 정보는 JsonGenerator.cs에 넘겨준다.
+=> 첫번쨰 방법 : public PlayerInfo[] Infos { get { return mInfos; } }
+
+private void LoadPlayerInfo()
+{
+    string data = Resources.Load<TextAsset>("JsonFiles/PlayerInfo").text;
+    Debug.Log(data);
+
+    mPlayerInfos = JsonConvert.DeserializeObject<PlayerInfo[]>(data);
+}
+
+private void SavePlayerInfo()
+{
+    mPlayerInfos = PlayerInfoController.Instance.Infos;
+    string data = JsonConvert.SerializeObject(mPlayerInfos, Formatting.Indented);
+    Debug.Log(data);
+
+    //StreamWriter writer = new StreamWriter(Application.dataPath + "/PlayerInfo.json");
+    StreamWriter writer = new StreamWriter(Application.dataPath + "/Resources/JsonFiles/PlayerInfo.json");
+    writer.Write(data);
+    writer.Close();
+}
 
 
+// ------------------------------------------------------------------------------------
+7. CSV를 야매로 하는 방법
 
+ [SerializeField]
+ private Dummy[] mSampleArr; 
+ private void LoadSample()
+ {
+     string data = Resources.Load<TextAsset>("JsonFiles/test").text;
+     string[] dataArr = data.Split('\n');
+     Debug.Log(dataArr.Length);
+     mSampleArr = new Dummy[dataArr.Length - 2];
+     for(int i = 0; i < mSampleArr.Length; i++)
+     {
+         string[] splited = dataArr[i + 1].Split(',');
+
+         mSampleArr[i] = new Dummy();
+         mSampleArr[i].id = int.Parse(splited[0]);
+         mSampleArr[i].name = splited[1];
+         mSampleArr[i].value = int.Parse(splited[2]);
+     }
+ }
+
+if(Input.GetKeyDown(KeyCode.A))
+{
+    LoadSample();
+}
 
 
 

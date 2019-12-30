@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Colleague : MonoBehaviour
 {
+#pragma warning disable 0649
     private Rigidbody2D mRB2D;
-    [SerializeField]
-    private float mSpeed;
-    [SerializeField]
-    private Transform mEffectPos;
+    [SerializeField]private float mSpeed;
+    [SerializeField]private Transform mEffectPos;
     private Animator mAnim;
 
     private int mID;
+#pragma warning restore
 
     private void Awake()
     {

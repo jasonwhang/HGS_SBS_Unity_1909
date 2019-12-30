@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class MainUIController : MonoBehaviour
 {
+#pragma warning disable 0649
     public static MainUIController Instance;
 
-    private static int mUIMoveHash = Animator.StringToHash("Move");
+    private static int mUIMoveHash = Animator.StringToHash("UIMove");
     [SerializeField]private Animator[] mWindowAnims;
     [SerializeField]private GaugeBar mProgressBar;
     [SerializeField]private Text mGoldText;
-    
+#pragma warning restore
+
     private void Awake()
     {
         if(Instance == null)

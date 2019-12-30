@@ -6,10 +6,10 @@ using System.IO;
 
 public class JsonGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private ColleagueData[] mDataArr;
-    [SerializeField]
-    private PlayerInfo[] mPlayerInfos;
+#pragma warning disable 0649
+    [SerializeField]private ColleagueData[] mDataArr;
+    [SerializeField]private PlayerInfo[] mPlayerInfos;
+#pragma warning restore
     // Start is called before the first frame update
     void Start()
     {

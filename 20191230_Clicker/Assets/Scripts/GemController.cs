@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GemController : MonoBehaviour
 {
+#pragma warning disable 0649
     public const int MAX_GEM_COUNT = 3;
 
     [SerializeField] private EffectPool mEffectPool;
@@ -15,12 +16,41 @@ public class GemController : MonoBehaviour
                                   mRewardBase = 10, mRewardWeight = 1.5f;
 
     private double mCurrentHP, mMaxHP, mPhaseBoundary;
+    // 2019.12.30 월요일 - 코드 추가
+    public double CurrentHP { get { return mCurrentHP; } }
+
     private int mCurrentPhase, mStartIndex;
+#pragma warning restore
 
     // Start is called before the first frame update
     void Awake()
     {
         mGemSprite = Resources.LoadAll<Sprite>("Gem");
+    }
+
+    // 2019.12.30 월요일 - 함수 추가
+    public void LoadGem(int lastGemID, double currentHP)
+    {
+        // 현재는 lastGemID와 currentHP 두가지의 정보만을 가지고 현재 보석의 정보를 다시 복원시켜야 한다.
+
+        mStartIndex = lastGemID * mSheetCount;
+        mCurrentHP = currentHP;
+        mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber);
+
+        //mCurrentPhase에 대한 정보를 현재 저장하지 않았으므로 저장하지 않고 가져오는 방법으로 해결을 해보자.
+        mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
+        MainUIController.Instance.ShowProgress(mCurrentHP, mMaxHP);
+
+        mCurrentPhase = 0;
+        while(mCurrentHP >= mPhaseBoundary)
+        {
+            mCurrentPhase++;
+            mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
+        }
+
+        // 보석의 이미지 페이즈 변환작업은 AddProgress함수에서 작업을 해준다.
+        // 이미지를 변환시키기 위해서는 mCurrentPhase의 값을 받아와야 한다.
+        mGem.sprite = mGemSprite[mStartIndex + mCurrentPhase];
     }
 
     public void GetNewGem(int id)

@@ -1,5 +1,10 @@
 2019.12.30 월요일 - 수업내용
 
+- Waring을 없애는 방법
+#pragma warning disable 0649
+변수
+#pragma warning restore
+
 // ------------------------------------------------------------------------------------
 1. SAVE와 LOAD의 개념
 
@@ -69,17 +74,113 @@ stream.close();
 => using System.IO;
 
 - Save함수의 기능을 작성해준다.
+public void Save()
+{
+    BinaryFormatter formatter = new BinaryFormatter();
+    MemoryStream stream = new MemoryStream();
+
+    // mPlayer의 데이터를 stream에 메모리를 통채로 집어넣는 기능이다.(데이터가 복제가 된 것이다.)
+    formatter.Serialize(stream, mPlayer);
+
+    // Buffer는 어떠한 상황에서 데이터를 사용하기 위해 미리 들고 있는 메모리 데이터의 공간이다.
+    // 버퍼링 : 인터넷에서 영상의 데이터를 미리 어느정도 들고 있게 하기 위해 로드를 하는 시간을 의미한다.
+    string data = Convert.ToBase64String(stream.GetBuffer());
+    Debug.Log(data);
+    PlayerPrefs.SetString("Player", data);
+    stream.Close();
+}
+
 
 - Load함수의 기능을 작성해준다.
+public void Load()
+{
+    string data = PlayerPrefs.GetString("Player");
+    if(!string.IsNullOrEmpty(data))
+    {
+        // 정상적인 데이터가 data에 들어온 경우
+        Debug.Log(data);
+
+        BinaryFormatter formatter = new BinaryFormatter();
+        // FromBase64String의 return값은 byte[]이다.
+        MemoryStream stream = new MemoryStream(Convert.FromBase64String(data));
+
+        // formatter.Deserialize의 return값이 object이다.
+        // 강제형변환을 해준다.
+        mPlayer = (PlayerSaveData)formatter.Deserialize(stream);
+
+        stream.Close();
+    }
+    else
+    {
+        // 잘못된 데이터가 data에 들어온 경우
+    }
+}
 
 // ------------------------------------------------------------------------------------
-4. 
+4. Gem에 대한 정보와 ColleagueData에 대한 정보를 Save를 시키는 기능을 만든다.
+
+- GemController.cs에서 mCurrentHP에 대한 Get프로퍼티를 만든다.
+=> public double CurrentHP { get { return mCurrentHP; } }
+
+- GameController.cs에서 Save함수에 정보를 가져온다.
+=> mPlayer.GemHP = mGem.CurrentHP;
+
+- PlayerInfoController.cs에서 PlayerLevel들을 가져오기 위한 Get프로퍼티를 만든다.
+public int[] LevelArr {
+    get 
+    {
+        int[] arr = new int[mInfos.Length];
+
+        for(int i = 0; i < arr.Length; i++)
+        {
+            arr[i] = mInfos[i].Level;
+        }
+
+        return arr;
+    }
+}
+
+- GameController.cs에서 Save함수에 정보를 가져온다.
+=> mPlayer.PlayerLevels = PlayerInfoController.Instance.LevelArr;
+
+- ColleagueController.cs에서 ColleagueLevel들을 가져오기 위한 Get프로퍼티를 만든다.
+public int[] LevelArr {
+    get {
+        int[] arr = new int[mDataArr.Length];
+
+        for (int i = 0; i < arr.Length; i++)
+        {
+            arr[i] = mDataArr[i].Level;
+        }
+
+        return arr;
+    }
+}
 
 
+- GameController.cs에서 Save함수에 정보를 가져온다.
+=> mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
 
+// ------------------------------------------------------------------------------------
+5. 에러가 나는 부분을 수정
+- AnimHash.cs에서 애니메이션 해쉬에 대한 변수를 새로 추가해준다.
+=> public static readonly int UIMove = Animator.StringToHash("Move");
 
+- MainUIController.cs에서 에러가 나는 부분을 수정해준다.
+=> private static int mUIMoveHash = Animator.StringToHash("Move");
+=> private static int mUIMoveHash = Animator.StringToHash("UIMove");
 
+// ------------------------------------------------------------------------------------
+6. Gem의 상태를 저장하기 위한 기능을 만들어준다.
 
+- GemController.cs에서 LoadGem 함수의 기능을 만들어준다.
+
+- GemController.cs의 GetNewGem의 int id는 GameController에서 정보를 준다.
+=> int id = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
+=> mGem.GetNewGem(id);
+
+- public class PlayerSaveData에 변수 추가
+=> public int GemID;
 
 
 

@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class TextEffect : MonoBehaviour
 {
-    [SerializeField]
-    private Text mText;
+#pragma warning disable 0649
+    [SerializeField]private Text mText;
+#pragma warning restore
     public void ShowText(string data)
     {
         mText.text = data;

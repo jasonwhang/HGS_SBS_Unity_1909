@@ -6,14 +6,30 @@ using UnityEngine;
 public class PlayerInfoController : MonoBehaviour
 {
     public static PlayerInfoController Instance;
-    [SerializeField]
-    private PlayerInfo[] mInfos;
+
+#pragma warning disable 0649
+    [SerializeField]private PlayerInfo[] mInfos;
     public PlayerInfo[] Infos { get { return mInfos; } }
-    [SerializeField]
-    private UIElement mElementPrefab;
-    [SerializeField]
-    private Transform mScrollTarget;
+
+    [SerializeField]private UIElement mElementPrefab;
+    [SerializeField]private Transform mScrollTarget;
     private List<UIElement> mElementList;
+#pragma warning restore
+
+    // 2019.12.30 월요일 - Get프로퍼티 추가
+    public int[] LevelArr {
+        get 
+        {
+            int[] arr = new int[mInfos.Length];
+
+            for(int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = mInfos[i].Level;
+            }
+
+            return arr;
+        }
+    }
 
     private void Awake()
     {
@@ -34,8 +50,9 @@ public class PlayerInfoController : MonoBehaviour
         for(int i = 0; i < mInfos.Length; i++)
         {
             UIElement element = Instantiate(mElementPrefab, mScrollTarget);
-            element.Init(null, i, mInfos[i].Name, mInfos[i].Contents, "Level UP", mInfos[i].Level, mInfos[i].ValueCurrent,
-                        mInfos[i].CostCurrent, mInfos[i].Duration, AddLevel, mInfos[i].ValueType);
+            element.Init(null, i, mInfos[i].Name, mInfos[i].Contents, "Level UP", 
+                         mInfos[i].Level, mInfos[i].ValueCurrent, mInfos[i].CostCurrent,
+                         mInfos[i].Duration, AddLevel, mInfos[i].ValueType);
             mElementList.Add(element);
         }
         GameController.Instance.TouchPower = mInfos[0].ValueCurrent;
@@ -69,12 +86,6 @@ public class PlayerInfoController : MonoBehaviour
         {
             GameController.Instance.TouchPower = mInfos[id].ValueCurrent;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
 [Serializable]

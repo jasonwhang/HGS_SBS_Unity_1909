@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+#pragma warning disable 0649
     public static GameController Instance;
 
     [SerializeField]
@@ -18,6 +19,7 @@ public class GameController : MonoBehaviour
     private PlayerSaveData mPlayer;
 
     public AnimHash.VoidCallback GoldConsumeCallback { get; set; }
+#pragma warning restore
 
     public double Gold {
         get { return mPlayer.Gold; }
@@ -73,7 +75,7 @@ public class GameController : MonoBehaviour
     {
         MainUIController.Instance.ShowGold(0);
         int id = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
-        mGem.GetNewGem(id);
+        mGem.GetNewGem(mPlayer.GemID);
     }
 
     public void Touch()
@@ -82,13 +84,17 @@ public class GameController : MonoBehaviour
         {
             mPlayer.Stage++;
             int id = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
-            mGem.GetNewGem(id);
+            mGem.GetNewGem(mPlayer.GemID);
         }
     }
 
     // 2019.12.30 월요일 - 함수 추가
     public void Save()
     {
+        mPlayer.GemHP = mGem.CurrentHP;
+        mPlayer.PlayerLevels = PlayerInfoController.Instance.LevelArr;
+        mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
+
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream stream = new MemoryStream();
 

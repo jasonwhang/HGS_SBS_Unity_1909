@@ -5,13 +5,12 @@ using UnityEngine.UI;
 
 public class UIElement : MonoBehaviour
 {
-    [SerializeField]
-    private Image mIcon;
-    [SerializeField]
-    private Text mNameText, mLevelText, mContentsText, mPurchaseText, mCostText;
-    [SerializeField]
-    private Button mPurchaseButton;
+#pragma warning disable 0649
+    [SerializeField]private Image mIcon;
+    [SerializeField]private Text mNameText, mLevelText, mContentsText, mPurchaseText, mCostText;
+    [SerializeField]private Button mPurchaseButton;
     private int mID;
+#pragma warning restore
 
     public void Init(Sprite icon, int id, string name,
                      string contents, string purchaseText,

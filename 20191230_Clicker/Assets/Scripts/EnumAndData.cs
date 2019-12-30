@@ -23,6 +23,7 @@ public enum eValueType
 public class PlayerSaveData
 {
     public int Stage;
+    public int GemID;
     public double Gold;
     public double GemHP;
     public int[] PlayerLevels;

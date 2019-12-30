@@ -5,18 +5,36 @@ using UnityEngine;
 
 public class ColleagueController : MonoBehaviour
 {
+#pragma warning disable 0649
     public static ColleagueController Instance;
 
     [SerializeField]private ColleagueData[] mDataArr;
     [SerializeField]private Colleague[] mPrefabArr;
+
     private List<Colleague> mSpawnedList;
     [SerializeField]private Transform mSpawnPos;
+
     [SerializeField]private Sprite[] mIconArr;
 
     [SerializeField]private UIElement mElementPrefab;
     [SerializeField]private Transform mScrollTarget;
     private List<UIElement> mElementList;
     [SerializeField]private TextEffectPool mTextEffectPool;
+#pragma warning restore
+
+    // 2019.12.30 월요일 - Get프로퍼티 추가
+    public int[] LevelArr {
+        get {
+            int[] arr = new int[mDataArr.Length];
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = mDataArr[i].Level;
+            }
+
+            return arr;
+        }
+    }
 
     private void Awake()
     {

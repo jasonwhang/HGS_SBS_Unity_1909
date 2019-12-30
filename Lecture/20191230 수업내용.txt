@@ -1,0 +1,195 @@
+2019.12.30 월요일 - 수업내용
+
+// ------------------------------------------------------------------------------------
+1. SAVE와 LOAD의 개념
+
+- 메모리를 통채로 SAVE를 하는 방법
+=> 용량이 너무 커져서 SAVE를 많이 하지 못한다.
+
+- 필요한 데이터만 Save를 하는 방법
+=> 플레이어의 레벨
+=> 플레이어의 소지금
+=> 현재 진행되는 보석의 남은 체력
+=> 현재 스테이지의 정보
+
+- 가장 간단한 방법
+=> PlayerPrefs를 이용하는 방법
+=> 단점 : 보안에 매우 취약하다.
+=> 예제)
+public void Save()
+{
+    // Save를 하는 방법
+    PlayerPrefs.SetString("GemHP", mCurrentHP.ToString());
+    // Load를 하는 방법
+    // 비어있는 Key인지 아닌지를 먼저 체크를 해주어야 한다.
+    string data = PlayerPrefs.GetString("GemHP");
+}
+
+- Byte데이터로 바꾸는 방법으로 단점인 보안을 해결해준다.
+
+// ------------------------------------------------------------------------------------
+2. Save를 하기 위한 Data를 만들어준다.
+
+- EnumAndData.cs에 PlayerSaveData클래스를 만들어준다.
+public class PlayerSaveData
+{
+    public int Stage;
+    public double Gold;
+    public double GemHP;
+    public int[] PlayerLevels;
+    public int[] ColleagueLevels;
+}
+
+- GameController.cs에 PlayerSaveData클래스를 자료형으로 하는 변수를 만들어준다.
+=> private PlayerSaveData mPlayer;
+
+- GameController.cs에서 필요없는 변수인 mGold와 mStage를 삭제한다.
+=> 에러가 나는 부분에서 모두 mPlayer.Gold, mPlayer.Stage로 바꾸어준다.
+
+- 강사님께서는 Save와 Load의 Base클래스를 만들어두고 그것을 파생시키면서 해주었다.
+=> 예외처리에 대한 모든 사항들을 고려하기 위해서이다. 
+=> 데이터가 원래 없던 것인때 패치가 되면서 새롭게 데이터변수가 추가가 되었다.
+=> 기존에 있던 것을 Load를 해버리면 새롭게 추가된 변수에 대한 정보를 Load가 되지 않는 문제가 된다.
+
+BinaryFormatter bf = new BinaryFormatter()
+MemoryStream stream = new MemoryStream()
+
+bf.Serialize(stream, user);
+stream.close();
+
+// ------------------------------------------------------------------------------------
+3. GameController.cs에서 Save와 Load를 하는 기능을 만들어준다.
+
+- using을 추가해준다.
+// 2019.12.30 월요일 - using 코드 추가
+// 시스템이 Runtime중에 직렬화된 binary형태로 변화시켜주기 위한 라이브러리
+=> using System.Runtime.Serialization.Formatters.Binary;
+
+- using을 추가해준다.
+=> using System.IO;
+
+- Save함수의 기능을 작성해준다.
+
+- Load함수의 기능을 작성해준다.
+
+// ------------------------------------------------------------------------------------
+4. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

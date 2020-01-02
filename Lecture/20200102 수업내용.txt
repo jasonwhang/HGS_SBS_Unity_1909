@@ -55,9 +55,114 @@ public void CalcAndShowData(int id)
 
 - GameController.cs에서 Start함수에서 코루틴함수를 실행시켜준다.
 
+// ----------------------------------------------------------------------------------------
+4. 최초로 게임을 시작했을 때 로드를 하는 기능을 만들어보자.
+
+- GameController.cs 모든 데이터를 날려버린다.
+=> PlayerPrefs.DeleteAll();
+
+- 에메랄드보석만 나오는 이유
+=> LoadGames에서 mGem.LoadGem의 GemID가 0번으로 고정되기 때문이다.
+- 에메랄드보석의 제일처음상태가 나오지 않는 이유
+=> 계산을 할 때 잘못되었기 때문이다.
+
+- GemID를 Default값을 만들어주어야 한다.
+
+- GameController.cs의 Load함수에서 else에 코드 추가
+ // 2020.01.02 목요일 - 코드 추가
+ mPlayer = new PlayerSaveData();
+ // 2020.01.02 목요일 - 코드 추가
+ // 새로운 데이터가 생성이 되었을 때 그 상태에 대한 안내에 대한 키워드를 알려주어야 한다.
+ mPlayer.GemID = -1;
 
 
+- GameController.cs에서 랜덤하게 나오도록 해주자.
+// 2020.01.02 목요일 - 코드 추가
+if(mPlayer.GemID < 0)
+{
+    mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
+}
 
+// ----------------------------------------------------------------------------------------
+5. 
+
+- StaticValues.cs에 상수 변수를 추가해준다.
+// 2020.01.02 목요일 - 상수 변수 추가
+public const int PLATER_INFOS_LENGTH = 7;
+public const int COLLEAGUE_INFOS_LENGTH = 3;
+
+// ----------------------------------------------------------------------------------------
+6. 플레이어 스킬을 구현해보자.
+
+- GameController.cs에서 변수와 프로퍼티를 추가해준다.
+
+// 2020.01.02 목요일 - 변수 & 프로퍼티 추가
+public float CriticalRate 
+{
+    get { return mCriticalRate; }
+    set { mCriticalRate = value; }
+}
+private float mCriticalRate;
+
+// 2020.01.02 목요일 - 변수 & 프로퍼티 추가
+public float CriticalVaule 
+{
+    get { return mCriticalValue; }
+    set { mCriticalValue = value; }
+}
+private float mCriticalValue;
+
+- GameController.cs에서 Touch함수에서 코드 추가
+public void Touch()
+{
+    // 2020.01.02 목요일 - 코드 추가
+    double touchPower = mTouchPower;
+    // 2020.01.02 목요일 - 코드 추가
+    //float randVar = UnityEngine.Random.Range(0, 100f);
+    // 0 ~ 1사이의 값이 나오도록 하는 함수이다.
+    float randVar = UnityEngine.Random.value; 
+
+    if(randVar <= mCriticalRate)
+    {
+        // 크리티컬 확률이 들어왔으므로 크리티컬이 터져야 한다.
+        touchPower *= (1 + mCriticalValue);
+        Debug.Log("Critical" + "!!!!");
+    }
+
+    if (mGem.AddProgress(mTouchPower))
+    {
+        mPlayer.Stage++;
+        mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
+        mGem.GetNewGem(mPlayer.GemID);
+    }
+}
+
+- PlayerInfoController.cs에서 CalcAndShowData함수에서 스킬추가를 해준다.
+if (id == 0)
+{
+    GameController.Instance.TouchPower = mInfos[id].ValueCurrent;
+}
+else if(id == 1)
+{
+
+}
+else if (id == 2)
+{
+
+}
+else if (id == 3)
+{
+    // 2020.01.02 목요일 - 코드 추가
+    GameController.Instance.CriticalRate = (float)mInfos[id].ValueCurrent;
+}
+else if(id == 4)
+{
+    // 2020.01.02 목요일 - 코드 추가
+    GameController.Instance.CriticalVaule = (float)mInfos[id].ValueCurrent;
+}
+
+
+// ----------------------------------------------------------------------------------------
 
 
 

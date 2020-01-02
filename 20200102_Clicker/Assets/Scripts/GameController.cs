@@ -52,6 +52,23 @@ public class GameController : MonoBehaviour
     }
     private double mTouchPower;
 
+    // 2020.01.02 목요일 - 변수 & 프로퍼티 추가
+    public float CriticalRate 
+    {
+        get { return mCriticalRate; }
+        set { mCriticalRate = value; }
+    }
+    private float mCriticalRate;
+
+    // 2020.01.02 목요일 - 변수 & 프로퍼티 추가
+    public float CriticalVaule 
+    {
+        get { return mCriticalValue; }
+        set { mCriticalValue = value; }
+    }
+    private float mCriticalValue;
+
+
     private void Awake()
     {
         if(Instance == null)
@@ -67,6 +84,9 @@ public class GameController : MonoBehaviour
     void Start()
     {
         MainUIController.Instance.ShowGold(mPlayer.Gold);
+        // 2020.01.02 목요일 - 코드 추가
+        //PlayerPrefs.DeleteAll();
+
         Load();
         // 2020.01.02 목요일 - 코드 추가
         StartCoroutine(LoadGames());
@@ -82,7 +102,11 @@ public class GameController : MonoBehaviour
         {
             yield return pointOne;
         }
-
+        // 2020.01.02 목요일 - 코드 추가
+        if(mPlayer.GemID < 0)
+        {
+            mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
+        }
         mGem.LoadGem(mPlayer.GemID, mPlayer.GemHP);
         PlayerInfoController.Instance.Load(mPlayer.PlayerLevels);
         ColleagueController.Instance.Load(mPlayer.ColleagueLevels);
@@ -90,7 +114,21 @@ public class GameController : MonoBehaviour
 
     public void Touch()
     {
-        if(mGem.AddProgress(mTouchPower))
+        // 2020.01.02 목요일 - 코드 추가
+        double touchPower = mTouchPower;
+        // 2020.01.02 목요일 - 코드 추가
+        //float randVar = UnityEngine.Random.Range(0, 100f);
+        // 0 ~ 1사이의 값이 나오도록 하는 함수이다.
+        float randVar = UnityEngine.Random.value; 
+
+        if(randVar <= mCriticalRate)
+        {
+            // 크리티컬 확률이 들어왔으므로 크리티컬이 터져야 한다.
+            touchPower *= (1 + mCriticalValue);
+            Debug.Log("Critical" + "!!!!");
+        }
+
+        if (mGem.AddProgress(mTouchPower))
         {
             mPlayer.Stage++;
             mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
@@ -114,6 +152,7 @@ public class GameController : MonoBehaviour
         PlayerPrefs.SetString("Player", data);
         stream.Close();
     }
+
     public void Load()
     {
         string data = PlayerPrefs.GetString("Player");
@@ -128,7 +167,19 @@ public class GameController : MonoBehaviour
         }
         else
         {
-
+            // 2020.01.02 목요일 - 코드 추가
+            mPlayer = new PlayerSaveData();
+            // 2020.01.02 목요일 - 코드 추가
+            // 새로운 데이터가 생성이 되었을 때 그 상태에 대한 안내에 대한 키워드를 알려주어야 한다.
+            mPlayer.GemID = -1;
+            // 2020.01.02 목요일 - 코드 추가
+            mPlayer.PlayerLevels = new int[StaticValues.PLATER_INFOS_LENGTH];
+            // 2020.01.02 목요일 - 코드 추가
+            mPlayer.PlayerLevels[0] = 1;
+            // 2020.01.02 목요일 - 코드 추가
+            mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+            // 2020.01.02 목요일 - 코드 추가
+            mPlayer.ColleagueLevels[0] = 0;
         }
     }
 

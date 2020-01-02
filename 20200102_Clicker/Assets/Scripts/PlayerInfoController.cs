@@ -117,6 +117,24 @@ public class PlayerInfoController : DataLoader
         {
             GameController.Instance.TouchPower = mInfos[id].ValueCurrent;
         }
+        else if(id == 1)
+        {
+
+        }
+        else if (id == 2)
+        {
+
+        }
+        else if (id == 3)
+        {
+            // 2020.01.02 목요일 - 코드 추가
+            GameController.Instance.CriticalRate = (float)mInfos[id].ValueCurrent;
+        }
+        else if(id == 4)
+        {
+            // 2020.01.02 목요일 - 코드 추가
+            GameController.Instance.CriticalVaule = (float)mInfos[id].ValueCurrent;
+        }
     }
 
     // Update is called once per frame

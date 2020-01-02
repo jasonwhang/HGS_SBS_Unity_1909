@@ -7,17 +7,12 @@ public class GemController : MonoBehaviour
 {
     public const int MAX_GEM_COUNT = 3;
 #pragma warning disable 0649
-    [SerializeField]
-    private EffectPool mEffectPool;
-    [SerializeField]
-    private int mSheetCount = 5;
-    [SerializeField]
-    private SpriteRenderer mGem;
-    [SerializeField]
-    private Sprite[] mGemSprite;
-    [SerializeField]
-    private float mHPBase = 10, mHPWeight = 1.4f,
-                  mRewardBase = 10, mRewardWeight = 1.5f;
+    [SerializeField]private EffectPool mEffectPool;
+    [SerializeField]private int mSheetCount = 5;
+    [SerializeField]private SpriteRenderer mGem;
+    [SerializeField]private Sprite[] mGemSprite;
+    [SerializeField]private float mHPBase = 10, mHPWeight = 1.4f,
+                                  mRewardBase = 10, mRewardWeight = 1.5f;
     private double mCurrentHP, mMaxHP, mPhaseBoundary;
     public double CurrentHP { get { return mCurrentHP; } }
     private int mCurrentPhase, mStartIndex;

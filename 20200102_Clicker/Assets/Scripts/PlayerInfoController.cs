@@ -135,6 +135,21 @@ public class PlayerInfoController : DataLoader
             // 2020.01.02 목요일 - 코드 추가
             GameController.Instance.CriticalVaule = (float)mInfos[id].ValueCurrent;
         }
+        // 2020.01.03 금요일 - 코드 추가
+        else if (id == 5)
+        {
+            GameController.Instance.IncomeBonusWeight = (float)mInfos[id].ValueCurrent;
+        }
+        // 2020.01.03 금요일 - 코드 추가
+        else if (id == 6)
+        {
+            GameController.Instance.MaxHPWeight = (float)mInfos[id].ValueCurrent;
+        }
+        else
+        {
+            // 에러가 났을 경우 처리하는 부분
+            Debug.LogError("Wrong Player Skill ID:" + id);
+        }
     }
 
     // Update is called once per frame

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ColleagueController : DataLoader
 {
     public static ColleagueController Instance;
+
 #pragma warning disable 0649
     [SerializeField]private ColleagueData[] mDataArr;
     [SerializeField]private Colleague[] mPrefabArr;
@@ -117,7 +118,7 @@ public class ColleagueController : DataLoader
     public void AddLevel(int id, int amount)
     {
         GameController.Instance.GoldConsumeCallback = () => { ApplyLevel(id, amount); };
-        GameController.Instance.Gold -= mDataArr[id].CostCurrent;      
+        GameController.Instance.Gold -= mDataArr[id].CostCurrent;
     }
 
     public void ApplyLevel(int id, int amount)

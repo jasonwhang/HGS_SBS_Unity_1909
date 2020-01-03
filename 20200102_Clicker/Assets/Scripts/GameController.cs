@@ -68,6 +68,19 @@ public class GameController : MonoBehaviour
     }
     private float mCriticalValue;
 
+    // 2020.01.03 금요일 - 프로퍼티 추가
+    public double IncomeBonusWeight 
+    {
+        get { return mGem.IncomeBonusWeight; }
+        set { mGem.IncomeBonusWeight = value; }
+    }
+    // 2020.01.03 금요일 - 프로퍼티 추가
+    public double MaxHPWeight 
+    {
+        get { return mGem.MaxHPWeight; }
+        set { mGem.MaxHPWeight = value; }
+    }
+
 
     private void Awake()
     {

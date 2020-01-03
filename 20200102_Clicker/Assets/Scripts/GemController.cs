@@ -7,15 +7,33 @@ public class GemController : MonoBehaviour
 {
     public const int MAX_GEM_COUNT = 3;
 #pragma warning disable 0649
-    [SerializeField]private EffectPool mEffectPool;
-    [SerializeField]private int mSheetCount = 5;
-    [SerializeField]private SpriteRenderer mGem;
-    [SerializeField]private Sprite[] mGemSprite;
-    [SerializeField]private float mHPBase = 10, mHPWeight = 1.4f,
+    [SerializeField] private EffectPool mEffectPool;
+    [SerializeField] private int mSheetCount = 5;
+    [SerializeField] private SpriteRenderer mGem;
+    [SerializeField] private Sprite[] mGemSprite;
+    [SerializeField] private float mHPBase = 10, mHPWeight = 1.4f,
                                   mRewardBase = 10, mRewardWeight = 1.5f;
     private double mCurrentHP, mMaxHP, mPhaseBoundary;
     public double CurrentHP { get { return mCurrentHP; } }
     private int mCurrentPhase, mStartIndex;
+
+    // 2020.01.03 금요일 - 변수 추가
+    private double mIncomeBonusWeight;
+    // 2020.01.03 금요일 - 프로퍼티 추가
+    public double IncomeBonusWeight {
+        get { return mIncomeBonusWeight; }
+        set { mIncomeBonusWeight = value; }
+    }
+
+    // 2020.01.03 금요일 - 변수 추가
+    public double mMaxHPWeight;
+    // 2020.01.03 금요일 - 프로퍼티 추가
+    public double MaxHPWeight
+    {
+        get { return mMaxHPWeight; }
+        set { mMaxHPWeight = value; }
+    }
+
 #pragma warning restore
     // Start is called before the first frame update
     void Awake()
@@ -47,7 +65,9 @@ public class GemController : MonoBehaviour
         mGem.sprite = mGemSprite[mStartIndex];
         mCurrentPhase = 0;
         mCurrentHP = 0;
-        mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber);
+        // 2020.01.03 금요일 - 코드 수정
+        mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber) *
+                (1 - mMaxHPWeight);
         mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
         MainUIController.Instance.ShowProgress(mCurrentHP, mMaxHP);
     }
@@ -65,8 +85,10 @@ public class GemController : MonoBehaviour
             {
                 //Clear
                 //GameController.Instance.NextStage();
+                // 2020.01.03 금요일 - 코드 수정
                 GameController.Instance.Gold += mRewardBase * 
-                            Math.Pow(mRewardWeight, GameController.Instance.StageNumber);
+                            Math.Pow(mRewardWeight, GameController.Instance.StageNumber) *
+                            (1 + mIncomeBonusWeight);
                 return true;
             }
             Timer effect = mEffectPool.GetFromPool((int)eEffectType.PhaseShift);

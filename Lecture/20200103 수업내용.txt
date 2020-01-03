@@ -1,0 +1,233 @@
+2020.01.03 금요일 - 수업내용
+
+// ----------------------------------------------------------------------------------------
+1. 플레이어의 스킬정보를 구현해보자(5번스킬)
+- 5번스킬
+- 이름 : 수전노
+- 퍼센트로 작업완료를 추가시켜주는 기능
+
+- 골드를 획득하는 시점에서 골드보상금을 퍼센트만큼 가중치로 붙어서 더해져야 된다.
+=> GemController.cs에서 AddProgress함수에서 보상금이 주어진다.
+=> 변수 추가 : private double mIncomeBonus;
+=> 프로퍼티 추가 : 
+public double IncomeBonusWeight 
+{
+    get { return mIncomeBonus; }
+    set { mIncomeBonus = value; }
+}
+=> 코드 수정 : (1 + mIncomeBonusWeight)를 곱해준다.
+GameController.Instance.Gold += mRewardBase * 
+            Math.Pow(mRewardWeight, GameController.Instance.StageNumber) *
+            (1 + mIncomeBonusWeight);
+
+- PlayerInfoController.cs에서 GemController.cs를 직접 접근하여 알필요는 없다.
+- GameController.cs가 GemController.cs의 게이트웨이가 되어 PlayerInfoController.cs에 전달해주자.
+- GameController.cs에 프로퍼티 추가
+public double IncomeBonusWeight 
+{
+    get { return mGem.IncomeBonusWeight; }
+    set { mGem.IncomeBonusWeight = value; }
+}
+
+- PlayerInfoController.cs에 스킬의 효과를 적용해준다.
+else if (id == 5)
+{
+    GameController.Instance.IncomeBonusWeight = (float)mInfos[id].ValueCurrent;
+}
+
+// ----------------------------------------------------------------------------------------
+2. 플레이어의 스킬정보를 구현해보자(6번스킬)
+
+- 6번스킬
+- 이름 : 초벌작업
+- 퍼센트로 세공할 보석의 체력을 깍아주는 기능
+
+- GemController.cs에 변수와 프로퍼티를 추가해준다.
+public double mMaxHPWeight;
+public double MaxHPWeight
+{
+    get { return mMaxHPWeight; }
+    set { mMaxHPWeight = value; }
+}
+
+- GemController.cs에서 GetNewGem함수에서 코드를 수정해준다.
+=> Gem의 최대체력이 변경이 되는 시점이 GetNewGem함수이다.
+=> 최대체력을 감소시키는 스킬이기 때문에 (1 - )로 해주어야 한다.
+=> 여기에서 1 - 얼마 로 하는 경우가 아닌 숫자로 하면 안된다.
+mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber) *
+        (1 - mMaxHPWeight);
+
+- GameController.cs에서 프로퍼티를 추가해준다.
+public double MaxHPWeight 
+{
+    get { return mGem.MaxHPWeight; }
+    set { mGem.MaxHPWeight = value; }
+}
+
+- PlayerInfoController.cs에 스킬의 효과를 추가해준다.
+=> GameController.Instance.MaxHPWeight = (float)mInfos[id].ValueCurrent;
+
+// ----------------------------------------------------------------------------------------
+3. 스킬 쿨타임 버튼UI만들기
+- Button만들기
+=> Source Image에 Sprites -> UI -> 02_4Button을 넣기
+- 스킬쿨타임버튼의 이름을 넣을 Text만들기
+=> Rect Transfrom의 형태는 stretch-stretch로 하기
+=> Text : 연속조각, Font : GodoB, Font Size : 37
+- 쿨타임효과의 이미지 만들기
+=> Source Image에 Sprites -> UI -> 02_4Button을 넣기
+=> Image Type : Filled, Fill Method : Radial 360, Fill Origin : Top
+- 쿨타임시간 Text 만들기
+=> Rect Transfrom의 형태는 middel - stretch로 하기
+=> Rect Transfrom의 Height는 150로 하기
+=> Text : 90 : 00, Font : GodoB, Font Size : 37, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

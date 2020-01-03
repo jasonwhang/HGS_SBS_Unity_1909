@@ -17,6 +17,11 @@ public class PlayerInfoController : DataLoader
     private bool mIsLoaded;
     // 2020.01.02 목요일 - 코드 추가
     public bool bLoaded { get { return mIsLoaded; } }
+
+    // 2020.01.03 금요일 - 변수 추가
+    [SerializeField]
+    private SkillButton[] mSkillButtonArr;
+
 #pragma warning restore
 
     public int[] LevelArr
@@ -152,10 +157,36 @@ public class PlayerInfoController : DataLoader
         }
     }
 
+    // 20200103 금요일 - 함수 추가
+    public void ActiveSkill(int id)
+    {
+        StartCoroutine(CoolTimeWorks(id));
+    }
+
+    // 20200103 금요일 - 함수 추가
+    // 쿨타임이 작동하고 있는지에 대한 코루틴함수이다.
+    private IEnumerator CoolTimeWorks(int id)
+    {
+        // FixedUpdate는 물리처리를 하기 전에 돌아간다.
+        // Ridgidbody같은 것과 밀집한 연결이 되어있다.
+        // 그냥 Update는 그저 매 프레임마다 작업을 해야 하는 경우에 사용된다.
+        WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
+        Infos[id].CoolTimeCurrent = Infos[id].CoolTime;
+        mSkillButtonArr[id - 1].SetVisible(true);
+
+        while(Infos[id].CoolTimeCurrent > 0)
+        {
+            // fixedDeltaTime은 고정타임이다.
+            Infos[id].CoolTimeCurrent -= Time.fixedDeltaTime;
+            mSkillButtonArr[id - 1].ShowCoolTime(Infos[id].CoolTime, Infos[id].CoolTimeCurrent);
+            yield return fixedUpdate;
+        }
+        mSkillButtonArr[id - 1].SetVisible(false);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
     }
 }
 [Serializable]

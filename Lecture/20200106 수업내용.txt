@@ -1,0 +1,245 @@
+2020.01.06 월요일 - 수업내용
+
+- struct를 제외한 모든 자료형에서 new로 사용하여 만들어내는 것들은 모두 call by reference의 형태이다.
+
+// ----------------------------------------------------------------------------------------
+1. Skill의 기능을 구현해보자.
+
+- PlayerInfoController.cs -> CooltimeWorks -> ActiveSkill
+- PlayerInfoController.cs -> ActiveSkill -> switch작성
+- PlayerInfoController.cs -> ChainFunction -> 코루틴 작성
+=> 2초마다 기능을 수행하게 할 것인지 그냥 지속시간동안 쭉 기능을 수행하게 할 것인지 기획자와 소통해야 한다.
+
+private IEnumerator ChainFunction()
+{
+    float duration = mInfos[(int)eSkillID.Chain].Duration;
+    // 한번의 작업마다 작동해야하는 시간
+    float OPS = mInfos[(int)eSkillID.Chain].Duration / 
+    (float)mInfos[(int)eSkillID.Chain].ValueCurrent;
+    WaitForSeconds gap = new WaitForSeconds(OPS);
+
+    while (duration > 0)
+    {
+        duration -= OPS;
+        GameController.Instance.Touch();
+        yield return gap;
+    }
+
+    //float currentDur = 0;
+    //while(duration > 0)
+    //{
+    //    duration -= Time.fixedDeltaTime;
+    //    currentDur += Time.fixedDeltaTime;
+    //    if(currentDur >= OPS)
+    //    {
+    //        GameController.Instance.Touch();
+    //        currentDur = 0;
+    //    }
+    //    yield return new WaitForFixedUpdate();
+    //}
+
+}
+
+// ----------------------------------------------------------------------------------------
+2. 스킬2번을 구현해보자.
+
+- Colleague.cs -> 함수 추가
+=> Function이라는 코루틴으로 동료컨트롤러에게 JobFinish함수를 호출하고 있다.
+=> 우리는 JobFinish함수만 호출시키는 함수를 따로 만들어야 한다.
+
+// 2020.01.06 월요일 - 함수추가
+public void ForcedJobFinish()
+{
+    ColleagueController.Instance.JobFinish(mID, mEffectPos.position);
+}
+- CollegueController.cs -> 함수 추가
+=> 스폰이 된 동료캐릭터의 수만큼 강제로작업을 완수시키는 기능을 호출하는 함수를 만들어준다.
+
+public void ForcedJobFinishAll()
+{
+    for(int i = 0; i < mSpawnedList.Count; i++)
+    {
+        mSpawnedList[i].ForcedJobFinish();
+    }
+}
+
+- PlayerInfoController.cs -> 스킬기능구현
+public void ActiveSkill(int id)
+{
+    StartCoroutine(CooltimeWorks(id));
+
+    // 2020.01.06 월요일 - 수업내용
+    switch((eSkillID)id)
+    {
+        case eSkillID.Chain:
+            StartCoroutine(ChainFunction());
+            break;
+        case eSkillID.Overwork:
+            // 즉발형 스킬이다.
+            {
+                int count = (int)Mathf.Ceil((float)mInfos[(int)eSkillID.Overwork].ValueCurrent);
+
+                for(int i = 0; i < count; i++)
+                {
+                    ColleagueController.Instance.ForcedJobFinishAll();
+                }
+            }
+            break;
+    }
+}
+
+// ----------------------------------------------------------------------------------------
+3. Cooltime을 Save하는 기능을 만들어보자.
+
+- CoolTime을 저장하는 Arr을 만들어야 한다.
+- PlayerInfoController.cs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

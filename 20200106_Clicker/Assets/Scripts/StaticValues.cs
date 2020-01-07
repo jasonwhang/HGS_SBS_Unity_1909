@@ -13,5 +13,8 @@ public static class StaticValues
     public const string PLAYER_DATA_PATH = JSON_PATH + "PlayerInfo";
 
     public const int PLAYER_INFOS_LEGNTH = 7;
+    // 2020.01.07 화요일 - 변수 추가
+    // 현재 추가된 쿨타임버튼은 2개이다.
+    public const int COOLTIME_LENGTH = 2;
     public const int COLLEAGUE_INFOS_LENGTH = 3;
 }

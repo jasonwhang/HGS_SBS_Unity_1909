@@ -110,7 +110,11 @@ public class GameController : MonoBehaviour
             mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
         }
         mGem.LoadGem(mPlayer.GemID, mPlayer.GemHP);
-        PlayerInfoController.Instance.Load(mPlayer.PlayerLevels);
+
+        // 2020.01.07 화요일 - 코드 수정
+        //PlayerInfoController.Instance.Load(mPlayer.PlayerLevels);
+        PlayerInfoController.Instance.Load(mPlayer.PlayerLevels, mPlayer.Cooltimes);
+
         ColleagueController.Instance.Load(mPlayer.ColleagueLevels);
     }
 
@@ -135,11 +139,32 @@ public class GameController : MonoBehaviour
         }
     }
 
+    // 2020.01.07 화요일 - 함수 추가
+    public void Rebirth()
+    {
+        mPlayer.Soul += 10 * mPlayer.Stage;
+
+        mPlayer.Stage = 0;
+        mPlayer.GemID = -1;
+        mPlayer.Gold = 0;
+        mPlayer.GemHP = 0;
+        mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+        mPlayer.PlayerLevels[0] = 1;
+        mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
+        mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+
+        PlayerInfoController.Instance.Load(mPlayer.PlayerLevels, mPlayer.Cooltimes);
+        ColleagueController.Instance.Rebirth();
+        ColleagueController.Instance.Load(mPlayer.ColleagueLevels);
+    }
+
     public void Save()
     {
         mPlayer.GemHP = mGem.CurrentHP;
         //mPlayer.PlayerLevels = PlayerInfoController.Instance.LevelArr;
-        mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
+
+        // 2020.01.07 화요일 - 코드 삭제
+        //mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream stream = new MemoryStream();
@@ -170,13 +195,89 @@ public class GameController : MonoBehaviour
             mPlayer.GemID = -1;
             mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
             mPlayer.PlayerLevels[0] = 1;
+            // 2020.01.07 화요일 - 코드 추가
+            mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
             mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
         }
+
+        // 2020.01.07 화요일 - 코드 추가
+        FixSavedData();
+    }
+
+    // 2020.01.07 화요일 - 함수 추가
+    // 갱신하는 함수를 만들어준다.
+    private void FixSavedData()
+    {
+        // 저장되어 있는 데이터가 없는 경우
+        if(mPlayer.PlayerLevels == null)
+        {
+            mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+        }
+        // 이전에 저장되어 있는 데이터의 길이가 새롭게 추가된 플레이어 정보데이터의 길이보다 작은 경우
+        // 즉 새롭게 추가된 변수가 있는 경우
+        else if(mPlayer.PlayerLevels.Length < StaticValues.PLAYER_INFOS_LEGNTH)
+        {
+            // 새롭게 추가된 플레이어 정보데이터의 길이에 맞는 새로운 Arr을 만들어준다.
+            int[] temp = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+            // 기존에 저장되어 있는 플레이어레벨의 데이터의 길이는 새롭게 만들어준 Arr에 그대로 복사를 해준다.
+            for(int i = 0; i < mPlayer.PlayerLevels.Length; i++)
+            {
+                temp[i] = mPlayer.PlayerLevels[i];
+            }
+            mPlayer.PlayerLevels = temp;
+        }
+        // else는 일부러 넣지 않는 것이다.
+        // 새롭게 만들어서 복사하는 작업을 else if로 하는 이유는 else로 하게 되면 
+        // 정상적인 데이터가 들어오든지 비정상적인 데이터든지 간에 else가 들어와서 새롭게 할당하고 복사하는 작업을 하게 되어 
+        // 퍼포먼스 상으로 문제가 생길 수도 있다.
+        // 그러므로 else부분은 정상적인 데이터가 들어오는 경우이므로 그냥 아무것도 쓰지 않고 패스를 시켜버렸다.
+        
+        if(mPlayer.ColleagueLevels == null)
+        {
+            mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+        }
+        else if(mPlayer.ColleagueLevels.Length < StaticValues.COLLEAGUE_INFOS_LENGTH)
+        {
+            int[] temp = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+
+            for (int i = 0; i < mPlayer.ColleagueLevels.Length; i++)
+            {
+                temp[i] = mPlayer.ColleagueLevels[i];
+            }
+            mPlayer.ColleagueLevels = temp;
+        }
+
+        if (mPlayer.Cooltimes == null)
+        {
+            mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
+        }
+        else if (mPlayer.ColleagueLevels.Length < StaticValues.COOLTIME_LENGTH)
+        {
+            float[] temp = new float[StaticValues.COOLTIME_LENGTH];
+
+            for (int i = 0; i < mPlayer.Cooltimes.Length; i++)
+            {
+                temp[i] = mPlayer.Cooltimes[i];
+            }
+            mPlayer.Cooltimes = temp;
+        }
+    }
+
+    // 2020.01.07 화요일 - 함수 추가
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 2020.01.07 화요일 - 코드 추가
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if(Input.GetKeyDown(KeyCode.Q))
         {
             Save();

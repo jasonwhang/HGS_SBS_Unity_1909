@@ -1,0 +1,310 @@
+2020.01.07 화요일 - 수업내용
+
+// ----------------------------------------------------------------------------------------
+1. Save 덜 된 것들 마무리 하기
+
+- GameController.cs -> LoadGames에 에러나는 부분 수정하기 위하여 해야되는 사전작업들
+=> EnumAndData.cs -> PlayerSaveData -> 변수 추가 : public int[] Cooltimes; 
+=> 새로운 변수데이터가 배열형태로 추가가 되었다.
+=> GameController.cs -> Load -> mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
+=> StaticValues.cs -> 변수 추가 : public const float COOLTIME_LENGTH = 2;
+=> GameController.cs -> Load에서 현재 세이브데이터에는 새로 추가된 변수에 대한 데이터가 없기 때문에 else로 간다.
+
+- 없던 변수가 추가가 되는 경우 로드를 시킬 때 길이가 다르면 그것들에 대한 대응작업을 해주어야 한다.
+=> PlayerSaveData에 새롭게 변수가 추가되었다.
+=> 배열의 길이가 변경이 되었을 경우 변경이 된 것에 대하여 고치는 함수를 만들어준다.
+=> private void FixSaveData()
+// 2020.01.07 화요일 - 함수 추가
+// 갱신하는 함수를 만들어준다.
+private void FixSavedData()
+{
+    if(mPlayer.PlayerLevels == null)
+    {
+        mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+    }
+    else if(mPlayer.PlayerLevels.Length < StaticValues.PLAYER_INFOS_LEGNTH)
+    {
+        // 새로운 Arr를 먼저 만들어준다.
+        int[] temp = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+        // 원래 플레이어에 들어있던 레벨들의 정보들만 복사를 해준다.
+        for(int i = 0; i < mPlayer.PlayerLevels.Length; i++)
+        {
+            temp[i] = mPlayer.PlayerLevels[i];
+        }
+        mPlayer.PlayerLevels = temp;
+    }
+    // else는 일부러 넣지 않는 것이다.
+    // 새롭게 만들어서 복사하는 작업을 else if로 하는 이유는 else로 하게 되면 
+    // 정상적인 데이터가 들어오든지 비정상적인 데이터든지 간에 else가 들어와서 새롭게 할당하고 복사하는 작업을 하게 되어 
+    // 퍼포먼스 상으로 문제가 생길 수도 있다.
+    // 그러므로 else부분은 정상적인 데이터가 들어오는 경우이므로 그냥 아무것도 쓰지 않고 패스를 시켜버렸다.
+    
+    if(mPlayer.ColleagueLevels == null)
+    {
+        mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+    }
+    else if(mPlayer.ColleagueLevels.Length < StaticValues.COLLEAGUE_INFOS_LENGTH)
+    {
+        int[] temp = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+
+        for (int i = 0; i < mPlayer.ColleagueLevels.Length; i++)
+        {
+            temp[i] = mPlayer.ColleagueLevels[i];
+        }
+        mPlayer.ColleagueLevels = temp;
+    }
+
+    if (mPlayer.Cooltimes == null)
+    {
+        mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
+    }
+    else if (mPlayer.ColleagueLevels.Length < StaticValues.COOLTIME_LENGTH)
+    {
+        float[] temp = new float[StaticValues.COOLTIME_LENGTH];
+
+        for (int i = 0; i < mPlayer.Cooltimes.Length; i++)
+        {
+            temp[i] = mPlayer.Cooltimes[i];
+        }
+        mPlayer.Cooltimes = temp;
+    }
+}
+
+- PlayerInfoController.cs에서 Load함수에서 CoolTimeIndex가 -1인 데이터들인 경우 제외를 시켜주도록 
+작업을 해준다.
+=> PlayerInfoController.cs -> Load
+// 2020.01.07 화요일 - 코드 추가
+if(mInfos[i].CoolTimeIndex >= 0)
+{
+    StartCoroutine(CooltimeWorks(i));
+}
+
+- EnumAndData.cs -> enum eSkillID -> 시작인덱스번호를 1에서 0으로 수정
+public enum eSkillID
+{
+    // 2020.01.07 화요일 - 코드 수정
+    //Chain = 1,
+    Chain,
+    Overwork
+}
+
+- PlayerInfoController.cs -> CooltimeWorks함수 -> 코드 수정
+=> 코드 추가 : int coolTimeID = mInfos[id].CoolTimeIndex;
+=> 코드 수정 : mInfos[id].CoolTimeIndex -> coolTimeID 
+
+- 단축키 : 수정하고 싶은 변수 누르고 ctrl + rr
+
+
+// ----------------------------------------------------------------------------------------
+2. 
+- ColleagueController.cs -> 변수 추가
+=> private int[] mLevelArr;
+
+- ColleagueController.cs -> Load -> 코드 수정
+=> 수정 전 : for(int i = 0; i < levelArr.Length; i++)
+=> 수정 후 : for(int i = 0; i < mDataArr.Length; i++)
+
+- ColleagueController.cs -> ApplyLevel - 코드 추가
+=> mLevelArr[id] = mDataArr[id].Level;
+
+- GameController.cs -> Save -> 코드 삭제
+=> mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
+
+// ----------------------------------------------------------------------------------------
+3. 게임이 꺼질 때 자동으로 Save가 되도록 하는 방법
+
+- GameController.cs -> 함수 추가
+private void OnApplicationQuit()
+{
+    Save();
+}
+
+- 안드로이드폰에서 뒤로가기버튼이 Esc버튼과 동일하다.
+
+- 강사님께서 사용하시는 코드
+isLoading = true;
+if (instance == null)
+{
+    if (Application.platform == RuntimePlatform.Android)
+    {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+    }
+    instance = this;
+    DontDestoryOnLoad(gameObject);
+}
+else if (instance != null)
+{
+    Destory(gameObject);
+}
+
+
+// ----------------------------------------------------------------------------------------
+4. 환생기능 구현해보기
+
+- 
+- 환생하기 위한 재화를 추가해주어야 한다.
+=> EnumAndData.cs -> PlayerSaveData -> Soul변수 추가
+- GameController.cs -> Rebirth함수 추가
+public void Rebirth()
+{
+    mPlayer.Soul += 10 * mPlayer.Stage;
+
+    mPlayer.Stage = 0;
+    mPlayer.GemID = -1;
+    mPlayer.Gold = 0;
+    mPlayer.GemHP = 0;
+    mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+    mPlayer.PlayerLevels[0] = 1;
+    mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
+    mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+
+    PlayerInfoController.Instance.Load(mPlayer.PlayerLevels, mPlayer.Cooltimes);
+    ColleagueController.Instance.Rebirth();
+    ColleagueController.Instance.Load(mPlayer.ColleagueLevels);
+}
+
+- ColleagueController.cs -> Rebirth함수 추가
+=> 기존에 만들어진 동료캐릭터를 파괴시켜주어야 한다.
+=> 환생은 자주하는 컨텐츠가 아니기 때문에 Destory를 해도 상관은 없다.
+// ----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

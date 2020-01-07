@@ -23,18 +23,22 @@ public class ColleagueController : DataLoader
     public bool bLoaded { get { return mbLoaded; } }
 
 #pragma warning restore
-    public int[] LevelArr
-    {
-        get
-        {
-            int[] arr = new int[mDataArr.Length];
-            for(int i = 0;i <arr.Length; i++)
-            {
-                arr[i] = mDataArr[i].Level;
-            }
-            return arr;
-        }
-    }
+    // 2020.01.07 화요일 - 변수 추가
+    private int[] mLevelArr;
+
+    //public int[] LevelArr
+    //{
+    //    get
+    //    {
+    //        int[] arr = new int[mDataArr.Length];
+    //        for(int i = 0;i <arr.Length; i++)
+    //        {
+    //            arr[i] = mDataArr[i].Level;
+    //        }
+    //        return arr;
+    //    }
+    //}
+
     private void Awake()
     {
         if(Instance == null)
@@ -68,8 +72,10 @@ public class ColleagueController : DataLoader
 
     public void Load(int[] levelArr)
     {
-        for(int i = 0; i < levelArr.Length; i++)
-        {
+        // 2020.01.07 화요일 - 코드 수정
+        //for(int i = 0; i < levelArr.Length; i++)
+        for(int i = 0; i < mDataArr.Length; i++)
+            {
             mDataArr[i].Level = levelArr[i];
             CalcAndShowData(i);
             if (mDataArr[i].Level > 0)
@@ -79,6 +85,15 @@ public class ColleagueController : DataLoader
                 newCol.Init(i, mDataArr[i].JobTime);
                 mSpawnedList.Add(newCol);
             }
+        }
+    }
+
+    // 2020.01.07 화요일 - 함수 추가
+    public void Rebirth()
+    {
+        for(int i = 0; i < mSpawnedList.Count; i++)
+        {
+            Destroy(mSpawnedList[i].gameObject);
         }
     }
 
@@ -127,6 +142,8 @@ public class ColleagueController : DataLoader
             mSpawnedList.Add(newCol);
         }
         mDataArr[id].Level += amount;
+        // 2020.01.07 화요일 - 코드 추가
+        mLevelArr[id] = mDataArr[id].Level;
         CalcAndShowData(id);
     }
     public void CalcAndShowData(int id)

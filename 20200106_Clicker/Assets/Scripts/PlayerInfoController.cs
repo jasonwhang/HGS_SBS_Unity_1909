@@ -23,21 +23,20 @@ public class PlayerInfoController : DataLoader
     [SerializeField]
     private float[] mCoolTimeArr;
 
-    //public int[] LevelArr
-    //{
-    //    get
-    //    {
+    //public int[] LevelArr {
+    //    get {
     //        int[] arr = new int[mInfos.Length];
-    //        for(int i = 0; i < arr.Length; i++)
+    //        for (int i = 0; i < arr.Length; i++)
     //        {
     //            arr[i] = mInfos[i].Level;
     //        }
     //        return arr;
     //    }
     //}
+
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             mbLoaded = false;
@@ -73,10 +72,15 @@ public class PlayerInfoController : DataLoader
         // 2020.01.06 월요일 - 코드 추가
         mCoolTimeArr = coolTimeArr;
 
-        for(int i = 0; i < levelArr.Length; i++)
+        for(int i = 0; i < mInfos.Length; i++)
         {
             mInfos[i].Level = levelArr[i];
             CalcAndShowData(i);
+            // 2020.01.07 화요일 - 코드 추가
+            if(mInfos[i].CoolTimeIndex >= 0)
+            {
+                StartCoroutine(CooltimeWorks(i));
+            }
         }
     }
 
@@ -150,9 +154,12 @@ public class PlayerInfoController : DataLoader
     public void ActiveSkill(int id)
     {
         StartCoroutine(CooltimeWorks(id));
+        // 2020.01.07 화요일 - 코드 위치 수정
+        mCoolTimeArr[mInfos[id].CoolTimeIndex] = mInfos[id].CoolTime;
 
-        // 2020.01.06 월요일 - 수업내용
-        switch((eSkillID)id)
+        // 2020.01.07 화요일 - 코드 수정
+        //switch ((eSkillID)id)
+        switch ((eSkillID)mInfos[id].CoolTimeIndex)
         {
             case eSkillID.Chain:
                 StartCoroutine(ChainFunction());
@@ -186,41 +193,35 @@ public class PlayerInfoController : DataLoader
             yield return gap;
         }
 
-        //float currentDur = 0;
-        //while(duration > 0)
-        //{
-        //    duration -= Time.fixedDeltaTime;
-        //    currentDur += Time.fixedDeltaTime;
-        //    if(currentDur >= OPS)
-        //    {
-        //        GameController.Instance.Touch();
-        //        currentDur = 0;
-        //    }
-        //    yield return new WaitForFixedUpdate();
-        //}
-
     }
 
     private IEnumerator CooltimeWorks(int id)
     {
         WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
-        mCoolTimeArr[mInfos[id].CoolTimeIndex] = mInfos[id].CoolTime;
+        // 2020.01.07 화요일 - 코드 추가
+        int coolTimeID = mInfos[id].CoolTimeIndex;
 
-        //mInfos[id].CoolTimeCurrent = mInfos[id].CoolTime;
-        mCoolTimeArr[mInfos[id].CoolTimeIndex] = mInfos[id].CoolTime;
+        // 2020.01.07 화요일 - 코드 수정
+        //mCoolTimeArr[mInfos[id].CoolTimeIndex] = mInfos[id].CoolTime;
+        mCoolTimeArr[coolTimeID] = mInfos[id].CoolTime;
         mSkillArr[id - 1].SetVisible(true);
-        //while (mInfos[id].CoolTimeCurrent > 0)
-        while (mCoolTimeArr[mInfos[id].CoolTimeIndex] > 0)
-            {
-            //mInfos[id].CoolTimeCurrent -= Time.fixedDeltaTime;
-            mCoolTimeArr[mInfos[id].CoolTimeIndex] -= Time.fixedDeltaTime;
-            //mSkillArr[id - 1].ShowCoolTime(mInfos[id].CoolTime, mInfos[id].CoolTimeCurrent);
-            mSkillArr[id - 1].ShowCoolTime(mInfos[id].CoolTime, mCoolTimeArr[mInfos[id].CoolTimeIndex]);
+
+        // 2020.01.07 화요일 - 코드 수정
+        //while (mCoolTimeArr[mInfos[id].CoolTimeIndex] > 0)
+        while (coolTimeID > 0)
+        {
+            // 2020.01.07 화요일 - 코드 수정
+            //mCoolTimeArr[mInfos[id].CoolTimeIndex] -= Time.fixedDeltaTime;
+            mCoolTimeArr[coolTimeID] -= Time.fixedDeltaTime;
+            // 2020.01.07 화요일 - 코드 수정
+            //mSkillArr[id - 1].ShowCoolTime(mInfos[id].CoolTime, mCoolTimeArr[mInfos[id].CoolTimeIndex]);
+            mSkillArr[id - 1].ShowCoolTime(mInfos[id].CoolTime, mCoolTimeArr[coolTimeID]);
             yield return fixedUpdate;
         }
         mSkillArr[id - 1].SetVisible(false);
     }
 }
+
 [Serializable]
 public class PlayerInfo
 {
